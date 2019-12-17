@@ -24,7 +24,8 @@ namespace TaskManager.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _baseService.GetList<Project>().ToListAsync());
+            List<Project> data = await _baseService.GetList<Project>().ToListAsync();
+            return View(new ApiResultModel<List<Project>>(data));
         }
 
     }

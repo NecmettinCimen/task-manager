@@ -1,17 +1,41 @@
-﻿@model List<Project>
+﻿@model ApiResultModel<List<Project>>
 @{
     ViewData["Title"] = "Projeler";
 }
-    <h2 id="active-items"><span class="bd-content-title">Projeler</span></h2>
-    <ul class="list-group">
-        @foreach (var item in Model)
-        {
-            <li class="list-group-item" style="cursor:pointer" href="/@FriendlyURL.GetURLFromTitle(item.Title)">@item.Title<br /><small class="form-text text-muted">@item.Explanation</small></li>
-        }
-    </ul>
-
-@section Scripts{ 
-    <script>
-        fetch('/project/list')
-    </script>
+<div class="row"><div class="col-md-12"><h2 class="bd-content-title float-left">Projeler</h2> <button class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#exampleModal">Ekle</button></div></div>
+@if (!Model.Success)
+{
+    <div class="alert alert-danger">Hata! <br /><small class="form-text text-muted">@Model.Error</small></div>
 }
+<ul class="list-group">
+    @foreach (var item in Model.Data)
+    {
+        <li class="list-group-item mt-2" style="cursor:pointer" onclick="window.location='/@FriendlyURL.GetURLFromTitle(item.Title)'">@item.Title<br /><small class="form-text text-muted">@item.Explanation</small></li>
+    }
+</ul>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Proje</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" action="/project/save">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>İsim</label>
+                        <input type="text" class="form-control" name="title">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

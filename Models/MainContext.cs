@@ -16,6 +16,8 @@ namespace TaskManager.Models
         {
             modelBuilder.Entity<User>().HasData(new User
             { Id = 1, NameSurname = "Admin", Email = "admin", Password = "1" });
+            modelBuilder.Entity<Event>().HasData(new Event
+            { Id = 1, Name = "Oluþturuldu."});
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -49,10 +51,7 @@ namespace TaskManager.Models
     {
         [Required]
         [MaxLength(250)]
-        public string Title { get; set; }
-        [Required]
-        [MaxLength(1000)]
-        public string Explanation { get; set; }
+        public string Name { get; set; }
     }
 
     public class Project : BaseEntity
@@ -60,20 +59,18 @@ namespace TaskManager.Models
         [Required]
         [MaxLength(250)]
         public string Title { get; set; }
-        [Required]
         [MaxLength(1000)]
         public string Explanation { get; set; }
         [ForeignKey("Users")]
-        public int UserId { get; set; } = 1;
+        public int ManagerId { get; set; } = 1;
         [ForeignKey("Events")]
-        public int EventId { get; set; }
+        public int EventId { get; set; } = 1;
     }
     public class Work : BaseEntity
     {
         [Required]
         [MaxLength(250)]
         public string Title { get; set; }
-        [Required]
         [MaxLength(1000)]
         public string Explanation { get; set; }
         [ForeignKey("Projects")]
@@ -81,7 +78,7 @@ namespace TaskManager.Models
         [ForeignKey("Users")]
         public int ManagerId { get; set; } = 1;
         [ForeignKey("Events")]
-        public int EventId { get; set; }
+        public int EventId { get; set; } = 1;
     }
 
     public class WorkHistory : BaseEntity

@@ -27,8 +27,6 @@ namespace TaskManager
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddFactory<IEventService, EventService>();
-            services.AddFactory<IProjectService, ProjectService>();
             services.AddFactory<IBaseService, BaseService>();
             services.AddDbContext<MainContext>();
             services.AddControllersWithViews();

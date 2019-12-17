@@ -1,7 +1,56 @@
-﻿@model ApiResultModel<Project>
+﻿@model ApiResultModel<ProjectViewModel>
 @{
-    ViewData["Title"] = Model.Data.Title;
+    ViewData["Title"] = Model.Data.Project.Title;
 }
 
-<h2 id="active-items"><span class="bd-content-title">@Model.Data.Title</span></h2>
-<small class="form-text text-muted">@Model.Data.Explanation</small>
+<div class="row"><div class="col-md-12"><h2 class="bd-content-title float-left">@Model.Data.Project.Title</h2> <button class="btn btn-outline-secondary float-right" data-toggle="modal" data-target="#exampleModal">Düzenle</button></div></div>
+<small class="form-text text-muted mb-5">@Model.Data.Project.Explanation</small>
+@if (!Model.Success)
+{
+    <div class="alert alert-danger">Hata! <br /><small class="form-text text-muted">@Model.Error</small></div>
+}
+
+<div class="row"><div class="col-md-12"><h4 class="bd-content-title float-left">Görevler</h4></div></div>
+<div class="row mb-2">
+    <div class="col-md-12">
+        <form action="/work/save" class="row">
+            <input hidden name="projectId" value="@Model.Data.Project.Id" />
+            <div class="col-md-11"><input name="title" class="form-control" placeholder="Görev Başlık" /></div>
+            <div class="col-md-1"><button class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#exampleModal">Ekle</button></div>
+        </form>
+    </div>
+</div>
+
+<ul class="list-group">
+    @foreach (var item in Model.Data.WorkList)
+    {
+        <li class="list-group-item mt-2" style="cursor:pointer">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <h5>#@item.Id @item.Title</h5>
+                        </div>
+                        <div class="col-md-2" style="text-align:right">
+                            <div class="dropdown">
+                                <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    @item.EventName
+                                </a>
+                                <div class="dropdown-menu">
+                                    @foreach (var e in Model.Data.EventList.Where(x=>x.Name!=item.EventName))
+                                    {
+                                        <a class="dropdown-item" href="#">@e.Name</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    }
+</ul>
+
+@section Scripts{
+
+}

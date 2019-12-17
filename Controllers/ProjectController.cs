@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TaskManager.Models;
 using TaskManager.Services;
@@ -7,67 +10,83 @@ namespace TaskManager.Controllers
 {
     public class ProjectController : Controller, IBaseController<Project>
     {
-        readonly IProjectService _projectService;
-        public ProjectController(IProjectService projectService)
+        readonly IBaseService _baseService;
+        public ProjectController(IBaseService baseService)
         {
-            _projectService = projectService;
+            _baseService = baseService;
         }
 
         public async Task<ActionResult> Index(string project)
         {
-            ApiResultModel<Project> model = await _projectService.GetByTitle(project);
-            if (model.Success)
-                return View(model);
+            List<Project> list = await _baseService.GetList<Project>().ToListAsync();
+            Project model = list.FirstOrDefault(f => FriendlyURL.GetURLFromTitle(f.Title) == project);
+            if (model != null)
+            {
+                ProjectViewModel result = new ProjectViewModel
+                {
+                    Project = model,
+                    WorkList = await (from w in _baseService.GetList<Work>()
+                                      where w.ProjectId == model.Id 
+                                      join e in _baseService.GetList<Event>() on w.EventId equals e.Id
+                                      select new WorkDto
+                                      {
+                                          Id=w.Id,
+                                          Title=w.Title,
+                                          CreateDate = w.CreateDate,
+                                          EventName=e.Name
+                                      }).ToListAsync(),
+                    EventList = await _baseService.GetList<Event>().ToListAsync()
+                };
+
+                return View(new ApiResultModel<ProjectViewModel>(result));
+            }
             else
                 return Redirect("/");
         }
 
         public async Task<IActionResult> Delete(int id)
         {
-            return Json(await _projectService.Delete(id));
+            ApiResultModel<bool> result;
+
+            try
+            {
+                result = new ApiResultModel<bool>(await _baseService.Delete<Project>(id));
+            }
+            catch (System.Exception ex)
+            {
+
+                result = new ApiResultModel<bool>(false, ex.Message);
+            }
+            return Json(result);
         }
 
-        public async Task<IActionResult> Get(int id)
+
+        public async Task<IActionResult> Save(Project model)
         {
-            return Json(await _projectService.Get(id));
+            ApiResultModel<List<Project>> result;
+
+            try
+            {
+                await _baseService.Save(model);
+                result = new ApiResultModel<List<Project>>(await _baseService.GetList<Project>().ToListAsync());
+            }
+            catch (System.Exception ex)
+            {
+
+                result = new ApiResultModel<List<Project>>(null, ex.Message);
+            }
+            return View("Index",result);
         }
 
-        public async Task<IActionResult> List()
+        public Task<IActionResult> Get(int id)
         {
-            return Json(await _projectService.GetList());
+            throw new System.NotImplementedException();
         }
 
-        public async Task<IActionResult> Save([FromBody]Project model)
+        public Task<IActionResult> List()
         {
-            return Json(await _projectService.Save(model));
+            throw new System.NotImplementedException();
         }
     }
-    public class EventController : Controller, IBaseController<Event>
-    {
-        readonly IEventService _eventService;
-        public EventController(IEventService eventService)
-        {
-            _eventService = eventService;
-        }
-
-        public async Task<IActionResult> Delete(int id)
-        {
-            return Json(await _eventService.Delete(id));
-        }
-
-        public async Task<IActionResult> Get(int id)
-        {
-            return Json(await _eventService.Get(id));
-        }
-
-        public async Task<IActionResult> List()
-        {
-            return Json(await _eventService.GetList());
-        }
-
-        public async Task<IActionResult> Save(Event model)
-        {
-            return Json(await _eventService.Save(model));
-        }
-    }
+    
 }

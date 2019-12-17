@@ -22,7 +22,7 @@ namespace TaskManager.Services
 
         public IQueryable<T> GetList<T>() where T : BaseEntity
         {
-            return _mainContext.Set<T>().Where(w => w.Status != 0);
+            return _mainContext.Set<T>().Where(w => w.Status != 0).OrderByDescending(o=>o.Id);
         }
         public async Task<T> Get<T>(int id) where T : BaseEntity
         {

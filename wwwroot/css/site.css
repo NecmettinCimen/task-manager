@@ -69,3 +69,32 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+.m-b-30 {
+    margin-bottom: 60px;
+}
+
+.success {
+    background: #00B961;
+    color: #fff;
+}
+
+.info {
+    background: #2A92BF;
+    color: #fff;
+}
+
+.warning {
+    background: #F4CE46;
+    color: #fff;
+}
+
+.error {
+    background: #FB7D44;
+    color: #fff;
+}
+
+#demo3 {
+    overflow-x: auto;
+    padding: 20px 0;
+}
