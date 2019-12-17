@@ -16,8 +16,7 @@ namespace TaskManager.Migrations
                     Status = table.Column<short>(nullable: false),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     CreatorId = table.Column<int>(nullable: false),
-                    Title = table.Column<string>(maxLength: 250, nullable: false),
-                    Explanation = table.Column<string>(maxLength: 1000, nullable: false)
+                    Name = table.Column<string>(maxLength: 250, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -34,8 +33,8 @@ namespace TaskManager.Migrations
                     CreateDate = table.Column<DateTime>(nullable: false),
                     CreatorId = table.Column<int>(nullable: false),
                     Title = table.Column<string>(maxLength: 250, nullable: false),
-                    Explanation = table.Column<string>(maxLength: 1000, nullable: false),
-                    UserId = table.Column<int>(nullable: false),
+                    Explanation = table.Column<string>(maxLength: 1000, nullable: true),
+                    ManagerId = table.Column<int>(nullable: false),
                     EventId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -89,7 +88,7 @@ namespace TaskManager.Migrations
                     CreateDate = table.Column<DateTime>(nullable: false),
                     CreatorId = table.Column<int>(nullable: false),
                     Title = table.Column<string>(maxLength: 250, nullable: false),
-                    Explanation = table.Column<string>(maxLength: 1000, nullable: false),
+                    Explanation = table.Column<string>(maxLength: 1000, nullable: true),
                     ProjectId = table.Column<int>(nullable: false),
                     ManagerId = table.Column<int>(nullable: false),
                     EventId = table.Column<int>(nullable: false)
@@ -97,6 +96,17 @@ namespace TaskManager.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Works", x => x.Id);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Events",
+                columns: new[] { "Id", "CreateDate", "CreatorId", "Name", "Status" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "Bekliyor", (short)1 },
+                    { 2, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "İşlemde", (short)1 },
+                    { 3, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "Tamamlandı", (short)1 },
+                    { 4, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "Red Edildi", (short)1 }
                 });
 
             migrationBuilder.InsertData(

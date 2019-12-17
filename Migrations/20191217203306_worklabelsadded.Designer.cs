@@ -10,8 +10,8 @@ using TaskManager.Models;
 namespace TaskManager.Migrations
 {
     [DbContext(typeof(MainContext))]
-    [Migration("20191217105421_eventdec")]
-    partial class eventdec
+    [Migration("20191217203306_worklabelsadded")]
+    partial class worklabelsadded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -52,7 +52,67 @@ namespace TaskManager.Migrations
                             Id = 1,
                             CreateDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatorId = 1,
-                            Name = "Oluşturuldu.",
+                            Name = "Bekliyor",
+                            Status = (short)1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreateDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatorId = 1,
+                            Name = "İşlemde",
+                            Status = (short)1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreateDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatorId = 1,
+                            Name = "Tamamlandı",
+                            Status = (short)1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreateDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatorId = 1,
+                            Name = "Red Edildi",
+                            Status = (short)1
+                        });
+                });
+
+            modelBuilder.Entity("TaskManager.Models.Label", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CreatorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
+
+                    b.Property<short>("Status")
+                        .HasColumnType("smallint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Labels");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreateDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatorId = 1,
+                            Name = "Web",
                             Status = (short)1
                         });
                 });
@@ -208,6 +268,33 @@ namespace TaskManager.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("WorkHistorys");
+                });
+
+            modelBuilder.Entity("TaskManager.Models.WorkLabels", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CreatorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LabelId")
+                        .HasColumnType("int");
+
+                    b.Property<short>("Status")
+                        .HasColumnType("smallint");
+
+                    b.Property<int>("WorkId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WorkLabels");
                 });
 #pragma warning restore 612, 618
         }

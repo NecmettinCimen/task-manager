@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace TaskManager.Services
 
         public IQueryable<T> GetList<T>() where T : BaseEntity
         {
-            return _mainContext.Set<T>().Where(w => w.Status != 0).OrderByDescending(o=>o.Id);
+            return _mainContext.Set<T>().Where(w => w.Status != 0).OrderByDescending(o => o.Id);
         }
         public async Task<T> Get<T>(int id) where T : BaseEntity
         {
@@ -30,6 +31,10 @@ namespace TaskManager.Services
         }
         public async Task<int> Save<T>(T model) where T : BaseEntity
         {
+            User user = AppHttpContext.Current.Session.Get<User>("user");
+            if (user != null)
+                model.CreatorId = user.Id;
+
             if (model.Id == 0)
                 await _mainContext.Set<T>().AddAsync(model);
             else

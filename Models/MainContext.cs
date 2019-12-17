@@ -12,17 +12,25 @@ namespace TaskManager.Models
         public DbSet<Work> Works { get; set; }
         public DbSet<WorkHistory> WorkHistorys { get; set; }
         public DbSet<Event> Events { get; set; }
+        public DbSet<Label> Labels { get; set; }
+        public DbSet<WorkLabels> WorkLabels { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasData(new User
             { Id = 1, NameSurname = "Admin", Email = "admin", Password = "1" });
-            modelBuilder.Entity<Event>().HasData(new Event
-            { Id = 1, Name = "Oluþturuldu."});
+            modelBuilder.Entity<Event>().HasData(new Event { Id = 1, Name = "Bekliyor" });
+            modelBuilder.Entity<Event>().HasData(new Event { Id = 2, Name = "Ýþlemde" });
+            modelBuilder.Entity<Event>().HasData(new Event { Id = 3, Name = "Tamamlandý" });
+            modelBuilder.Entity<Event>().HasData(new Event { Id = 4, Name = "Red Edildi" });
+            modelBuilder.Entity<Label>().HasData(new Label { Id = 1, Name = "Web" });
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
-                optionsBuilder.UseSqlServer("Data Source=localhost\\sekiz;Initial Catalog=dbtaskmanager;User ID=sa;Password=Nebula21;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            {
+                optionsBuilder.EnableSensitiveDataLogging(false);
+                optionsBuilder.UseSqlServer("Data Source=localhost\\sekiz;Initial Catalog=dbtaskmanager;User ID=sa;Password=Nebula21");
+            }
         }
     }
 
@@ -88,5 +96,20 @@ namespace TaskManager.Models
         public int WorkId { get; set; }
         [ForeignKey("Users")]
         public int ManagerId { get; set; } = 1;
+    }
+
+    public class Label : BaseEntity
+    {
+        [Required]
+        [MaxLength(250)]
+        public string Name { get; set; }
+    }
+
+    public class WorkLabels : BaseEntity
+    {
+        [ForeignKey("Works")]
+        public int WorkId { get; set; }
+        [ForeignKey("Labels")]
+        public int LabelId { get; set; }
     }
 }

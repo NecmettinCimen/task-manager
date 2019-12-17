@@ -10,8 +10,8 @@ using TaskManager.Models;
 namespace TaskManager.Migrations
 {
     [DbContext(typeof(MainContext))]
-    [Migration("20191217080700_eventfixed")]
-    partial class eventfixed
+    [Migration("20191217200051_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -52,7 +52,31 @@ namespace TaskManager.Migrations
                             Id = 1,
                             CreateDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatorId = 1,
-                            Name = "Oluşturuldu.",
+                            Name = "Bekliyor",
+                            Status = (short)1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreateDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatorId = 1,
+                            Name = "İşlemde",
+                            Status = (short)1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreateDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatorId = 1,
+                            Name = "Tamamlandı",
+                            Status = (short)1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreateDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatorId = 1,
+                            Name = "Red Edildi",
                             Status = (short)1
                         });
                 });
@@ -158,7 +182,6 @@ namespace TaskManager.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Explanation")
-                        .IsRequired()
                         .HasColumnType("nvarchar(1000)")
                         .HasMaxLength(1000);
 

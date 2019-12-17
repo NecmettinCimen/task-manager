@@ -16,7 +16,7 @@ namespace TaskManager.Controllers
             _baseService = baseService;
         }
 
-        public async Task<ActionResult> Index(string Work)
+        public ActionResult Index(string Work)
         {
             return View();
         }
@@ -40,22 +40,58 @@ namespace TaskManager.Controllers
 
         public async Task<IActionResult> Save(Work model)
         {
-            ApiResultModel<int> result;
+            Project project = await _baseService.Get<Project>(model.ProjectId);
+            await _baseService.Save(model);
+            await _baseService.Save(new WorkHistory() { PrevStatus = model.Status, WorkId = model.Id, ManagerId = model.ManagerId });
+            await _baseService.Save(new WorkLabels() { WorkId = model.Id, LabelId = 1 });
 
-            try
+            return Redirect("/" + FriendlyURL.GetURLFromTitle(project.Title));
+        }
+
+
+        public async Task<IActionResult> UpdateStatus(Work model)
+        {
+            Work item = await _baseService.Get<Work>(model.Id);
+            Project project = await _baseService.Get<Project>(model.ProjectId);
+            item.EventId = model.EventId;
+
+            await _baseService.Save(item);
+            await _baseService.Save(new WorkHistory() { PrevStatus = model.Status, WorkId = model.Id, ManagerId = model.ManagerId });
+
+            return Redirect("/" + FriendlyURL.GetURLFromTitle(project.Title));
+        }
+
+        public class UpdateLabelsDto
+        {
+            public int Id { get; set; }
+            public int ProjectId { get; set; }
+            public string Name { get; set; }
+            public int WorkId { get; set; }
+        }
+
+        public async Task<IActionResult> UpdateLabels(UpdateLabelsDto model)
+        {
+            Project project = await _baseService.Get<Project>(model.ProjectId);
+            Label item = new Label() { Id = model.Id, Name = model.Name };
+
+            if (model.Id == 0)
             {
-                await _baseService.Save(model);
-                await _baseService.Save(new WorkHistory() { PrevStatus = model.Status, WorkId = model.Id, ManagerId = model.ManagerId });
-                
-                result = new ApiResultModel<int>(model.Id);
-
+                await _baseService.Save(item);
             }
-            catch (System.Exception ex)
+            else
             {
-
-                result = new ApiResultModel<int>(0, ex.Message);
+                WorkLabels workLabels = await _baseService.GetList<WorkLabels>().FirstOrDefaultAsync(f => f.LabelId == model.Id && f.WorkId == model.WorkId);
+                if (workLabels != null)
+                {
+                    await _baseService.Delete<WorkLabels>(workLabels.Id);
+                }
+                else
+                {
+                    await _baseService.Save(new WorkLabels { LabelId = item.Id, WorkId = model.WorkId });
+                }
             }
-            return Json(result);
+
+            return Redirect("/" + FriendlyURL.GetURLFromTitle(project.Title));
         }
 
         public Task<IActionResult> Get(int id)

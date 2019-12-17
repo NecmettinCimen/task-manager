@@ -33,9 +33,16 @@ namespace TaskManager.Controllers
                                           Id=w.Id,
                                           Title=w.Title,
                                           CreateDate = w.CreateDate,
-                                          EventName=e.Name
+                                          EventName=e.Name,
+                                          ManagerId=w.ManagerId,
+                                          ProjectId=w.ProjectId,
+                                          Labels=_baseService.GetList<WorkLabels>().Where(wl=>wl.WorkId==w.Id).Select(s=>s.LabelId).ToList(),
+                                          FirstLabelName = (from wl in _baseService.GetList<WorkLabels>().Where(f => f.WorkId == w.Id)
+                                                            join l in _baseService.GetList<Label>() on wl.LabelId equals l.Id
+                                                            select l.Name).First()
                                       }).ToListAsync(),
-                    EventList = await _baseService.GetList<Event>().ToListAsync()
+                    EventList = await _baseService.GetList<Event>().ToListAsync(),
+                    LabelList = await _baseService.GetList<Label>().ToListAsync()
                 };
 
                 return View(new ApiResultModel<ProjectViewModel>(result));
@@ -75,7 +82,7 @@ namespace TaskManager.Controllers
 
                 result = new ApiResultModel<List<Project>>(null, ex.Message);
             }
-            return View("Index",result);
+            return View("~/Views/Home/Index.cshtml",result);
         }
 
         public Task<IActionResult> Get(int id)
