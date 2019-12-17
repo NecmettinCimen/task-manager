@@ -1,0 +1,17 @@
+﻿@model List<Project>
+@{
+    ViewData["Title"] = "Projeler";
+}
+    <h2 id="active-items"><span class="bd-content-title">Projeler</span></h2>
+    <ul class="list-group">
+        @foreach (var item in Model)
+        {
+            <li class="list-group-item" style="cursor:pointer" href="/@FriendlyURL.GetURLFromTitle(item.Title)">@item.Title<br /><small class="form-text text-muted">@item.Explanation</small></li>
+        }
+    </ul>
+
+@section Scripts{ 
+    <script>
+        fetch('/project/list')
+    </script>
+}

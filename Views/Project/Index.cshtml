@@ -1,0 +1,7 @@
+﻿@model ApiResultModel<Project>
+@{
+    ViewData["Title"] = Model.Data.Title;
+}
+
+<h2 id="active-items"><span class="bd-content-title">@Model.Data.Title</span></h2>
+<small class="form-text text-muted">@Model.Data.Explanation</small>

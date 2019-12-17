@@ -1,0 +1,42 @@
+*.swp
+*.*~
+project.lock.json
+.DS_Store
+*.pyc
+nupkg/
+
+# Rider
+.idea
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+msbuild.log
+msbuild.err
+msbuild.wrn
+
+# Visual Studio 2015
+.vs/
+/CafeApp.CafeMvc/wwwroot/images/309291-001-56a510423df78cf772862aea.jpg
+/CafeApp.CafeMvc/wwwroot/images/20191020214640.jpg
+/CafeApp.CafeMvc/wwwroot/images/20191020214425.jpg
+/CafeApp.CafeMvc/wwwroot/images/20191020214318.jpg
+/CafeApp.CafeMvc/wwwroot/images/20191020210114.jpg
+/CafeApp.CafeMvc/wwwroot/images/20191020205721.jpg
+/CafeApp.CafeMvc/wwwroot/images/20191020205525.jpg
+/CafeApp.LandingMvc/wwwroot/dghcafe.exe
