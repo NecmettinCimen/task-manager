@@ -1,7 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace TaskManager.Models
 {
@@ -39,7 +38,7 @@ namespace TaskManager.Models
         public int Id { get; set; }
         public short Status { get; set; } = 1;
         public DateTime CreateDate { get; set; } = new DateTime(2020, 1, 1);
-        [ForeignKey("Users")]
+        public User Creator { get; set; }
         public int CreatorId { get; set; } = 1;
     }
 
@@ -69,9 +68,9 @@ namespace TaskManager.Models
         public string Title { get; set; }
         [MaxLength(1000)]
         public string Explanation { get; set; }
-        [ForeignKey("Users")]
+        public User Manager { get; set; }
         public int ManagerId { get; set; } = 1;
-        [ForeignKey("Events")]
+        public Event Event { get; set; }
         public int EventId { get; set; } = 1;
     }
     public class Work : BaseEntity
@@ -81,20 +80,22 @@ namespace TaskManager.Models
         public string Title { get; set; }
         [MaxLength(1000)]
         public string Explanation { get; set; }
-        [ForeignKey("Projects")]
+        public Project Project { get; set; }
         public int ProjectId { get; set; }
-        [ForeignKey("Users")]
+        public User Manager { get; set; }
         public int ManagerId { get; set; } = 1;
-        [ForeignKey("Events")]
+        public Event Event { get; set; }
         public int EventId { get; set; } = 1;
+        public Work ParentWork { get; set; }
+        public int? ParentWorkId { get; set; }
     }
 
     public class WorkHistory : BaseEntity
     {
         public short PrevStatus { get; set; }
-        [ForeignKey("Works")]
+        public Work Work { get; set; }
         public int WorkId { get; set; }
-        [ForeignKey("Users")]
+        public User Manager { get; set; }
         public int ManagerId { get; set; } = 1;
     }
 
@@ -107,9 +108,9 @@ namespace TaskManager.Models
 
     public class WorkLabels : BaseEntity
     {
-        [ForeignKey("Works")]
+        public Work Work { get; set; }
         public int WorkId { get; set; }
-        [ForeignKey("Labels")]
+        public Label Label { get; set; }
         public int LabelId { get; set; }
     }
 }

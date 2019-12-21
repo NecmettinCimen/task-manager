@@ -78,6 +78,10 @@ namespace TaskManager
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                     "work",
+                     "work/{work}",
+                     new { controller = "Work", action = "Index" });
+                endpoints.MapControllerRoute(
                      "project",
                      "{project}",
                      new { controller = "Project", action = "Index" });

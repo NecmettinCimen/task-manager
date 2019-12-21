@@ -16,9 +16,25 @@ namespace TaskManager.Controllers
             _baseService = baseService;
         }
 
-        public ActionResult Index(string Work)
+        public async Task<ActionResult> Index(string work)
         {
-            return View();
+            List<Work> list = await _baseService.GetList<Work>().Where(f => FriendlyURL.GetURLFromTitle(f.Title) == work).ToListAsync();
+            Work model = list.FirstOrDefault();
+            if (model != null)
+            {
+                Event workevent = _baseService.GetList<Event>().First(f => f.Id == model.EventId);
+                List<Work> childList = await _baseService.GetList<Work>().Where(w => w.ParentWorkId == model.Id).ToListAsync();
+                
+                return View(new ApiResultModel<WorkViewModel>(new WorkViewModel
+                {
+                    Id=model.Id,
+                    CreateDate=model.CreateDate,
+                    ChildWorkList=childList,
+                    EventName = workevent.Name,
+                }));
+            }
+            else
+                return Redirect("/");
         }
 
         public async Task<IActionResult> Delete(int id)

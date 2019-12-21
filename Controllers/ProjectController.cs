@@ -28,6 +28,7 @@ namespace TaskManager.Controllers
                     WorkList = await (from w in _baseService.GetList<Work>()
                                       where w.ProjectId == model.Id 
                                       join e in _baseService.GetList<Event>() on w.EventId equals e.Id
+                                      orderby w.EventId
                                       select new WorkDto
                                       {
                                           Id=w.Id,
