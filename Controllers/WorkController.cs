@@ -18,19 +18,41 @@ namespace TaskManager.Controllers
 
         public async Task<ActionResult> Index(string work)
         {
-            List<Work> list = await _baseService.GetList<Work>().Where(f => FriendlyURL.GetURLFromTitle(f.Title) == work).ToListAsync();
-            Work model = list.FirstOrDefault();
+            Work model = _baseService.GetList<Work>().FirstOrDefault(f => f.Url == work);
             if (model != null)
             {
-                Event workevent = _baseService.GetList<Event>().First(f => f.Id == model.EventId);
-                List<Work> childList = await _baseService.GetList<Work>().Where(w => w.ParentWorkId == model.Id).ToListAsync();
-                
+                Event workevent = await _baseService.Get<Event>(model.EventId);
+                Project project = await _baseService.Get<Project>(model.ProjectId);
+
                 return View(new ApiResultModel<WorkViewModel>(new WorkViewModel
                 {
-                    Id=model.Id,
-                    CreateDate=model.CreateDate,
-                    ChildWorkList=childList,
+                    Id = model.Id,
+                    Title = model.Title,
+                    Explanation = model.Explanation,
+                    CreateDate = model.CreateDate,
+                    ProjectName = project.Title,
+                    ProjectId = model.ProjectId,
+                    ChildWorkList = await (from w in _baseService.GetList<Work>()
+                                           where w.ParentWorkId == model.Id
+                                           join e in _baseService.GetList<Event>() on w.EventId equals e.Id
+                                           orderby w.EventId
+                                           select new WorkDto
+                                           {
+                                               Id = w.Id,
+                                               Title = w.Title,
+                                               Url = w.Url,
+                                               CreateDate = w.CreateDate,
+                                               EventName = e.Name,
+                                               ManagerId = w.ManagerId,
+                                               ProjectId = w.ProjectId,
+                                               Labels = _baseService.GetList<WorkLabels>().Where(wl => wl.WorkId == w.Id).Select(s => s.LabelId).ToList(),
+                                               FirstLabelName = (from wl in _baseService.GetList<WorkLabels>().Where(f => f.WorkId == w.Id)
+                                                                 join l in _baseService.GetList<Label>() on wl.LabelId equals l.Id
+                                                                 select l.Name).First()
+                                           }).ToListAsync(),
                     EventName = workevent.Name,
+                    EventList = await _baseService.GetList<Event>().ToListAsync(),
+                    LabelList = await _baseService.GetList<Label>().ToListAsync()
                 }));
             }
             else
@@ -56,12 +78,33 @@ namespace TaskManager.Controllers
 
         public async Task<IActionResult> Save(Work model)
         {
-            Project project = await _baseService.Get<Project>(model.ProjectId);
+            model.Url = FriendlyURL.GetURLFromTitle(model.Title);
             await _baseService.Save(model);
             await _baseService.Save(new WorkHistory() { PrevStatus = model.Status, WorkId = model.Id, ManagerId = model.ManagerId });
             await _baseService.Save(new WorkLabels() { WorkId = model.Id, LabelId = 1 });
 
-            return Redirect("/" + FriendlyURL.GetURLFromTitle(project.Title));
+            if (model.ParentWorkId.HasValue)
+            {
+                Work work = await _baseService.Get<Work>(model.ParentWorkId.Value);
+                return Redirect($"/work/{model.Url}");
+            }
+            else
+            {
+                Project project = await _baseService.Get<Project>(model.ProjectId);
+                return Redirect($"/{project.Url}");
+            }
+
+        }
+
+        public async Task<IActionResult> Update(Work model)
+        {
+            Work item = await _baseService.Get<Work>(model.Id);
+            item.Title = model.Title;
+            item.Url = FriendlyURL.GetURLFromTitle(model.Title);
+            item.Explanation = model.Explanation;
+            await _baseService.Save(item);
+
+            return Redirect($"/work/{item.Url}");
         }
 
 
@@ -74,16 +117,10 @@ namespace TaskManager.Controllers
             await _baseService.Save(item);
             await _baseService.Save(new WorkHistory() { PrevStatus = model.Status, WorkId = model.Id, ManagerId = model.ManagerId });
 
-            return Redirect("/" + FriendlyURL.GetURLFromTitle(project.Title));
+            return Redirect($"/{project.Url}");
         }
 
-        public class UpdateLabelsDto
-        {
-            public int Id { get; set; }
-            public int ProjectId { get; set; }
-            public string Name { get; set; }
-            public int WorkId { get; set; }
-        }
+
 
         public async Task<IActionResult> UpdateLabels(UpdateLabelsDto model)
         {
@@ -107,7 +144,7 @@ namespace TaskManager.Controllers
                 }
             }
 
-            return Redirect("/" + FriendlyURL.GetURLFromTitle(project.Title));
+            return Redirect($"/{project.Url}");
         }
 
         public Task<IActionResult> Get(int id)

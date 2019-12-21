@@ -1,16 +1,76 @@
 ﻿@model ApiResultModel<ProjectViewModel>
+@using Microsoft.AspNetCore.Http;
 @{
     ViewData["Title"] = Model.Data.Project.Title;
+    int? user = Context.Session.GetInt32("userid");
 }
 
-<div class="row"><div class="col-md-12"><h2 class="bd-content-title float-left">@Model.Data.Project.Title</h2> <button class="btn btn-outline-secondary float-right" data-toggle="modal" data-target="#exampleModal">Düzenle</button></div></div>
-<small class="form-text text-muted mb-5">@Model.Data.Project.Explanation</small>
+@if (user.HasValue && user.Value == Model.Data.Project.ManagerId)
+{
+
+    <form action="/project/update" id="projectUpdateForm">
+        <input hidden name="id" value="@Model.Data.Project.Id" />
+        <input hidden name="managerId" value="@Model.Data.Project.ManagerId" />
+        <input hidden name="eventId" value="@Model.Data.Project.EventId" />
+        <input hidden name="title" />
+        <input hidden name="explanation" />
+        <div class="row">
+            <div class="col-md-12">
+                <h2 onkeyup="editButtonShow()" class="bd-content-title float-left" id="title" contenteditable="true">@Model.Data.Project.Title</h2>
+                <button id="saveButton" hidden type="button" class="btn btn-outline-secondary float-right">Kaydet</button>
+                @if (Model.Data.Project.Public)
+                {
+                    <button type="button" onclick="setpublic(@Model.Data.Project.Id)" class="btn btn-outline-success float-right">Kimse Görmesin</button>
+                }
+                else
+                {
+                    <button type="button" onclick="setpublic(@Model.Data.Project.Id)" class="btn btn-outline-danger float-right">Herkes Görsün</button>
+                }
+            </div>
+        </div>
+        <div id="editor1" onkeyup="editButtonShow()" contenteditable="true">@(String.IsNullOrEmpty(Model.Data.Project.Explanation) ? Html.Raw("Açıklama Ekle") : Html.Raw(Model.Data.Project.Explanation))</div>
+    </form>
+
+    @section Scripts{
+        <script src="https://cdn.ckeditor.com/4.13.1/standard-all/ckeditor.js"></script>
+
+        <script>
+            CKEDITOR.disableAutoInline = true;
+            CKEDITOR.inline('editor1', {
+                extraPlugins: 'sourcedialog'
+            });
+
+
+            function editButtonShow() {
+                $('#saveButton').removeAttr('hidden')
+            }
+
+            $('#saveButton').on('click', (e) => {
+                $('[name="title"]').val($('#title').text())
+                $('[name="explanation"]').val(CKEDITOR.instances.editor1.getData())
+                $('#projectUpdateForm').submit()
+            })
+
+            function setpublic(id) {
+                fetch('/project/UpdatePublic?id=' + id)
+                    .then(res => res.json())
+                    .then(res => location.reload())
+            }
+        </script>
+    }
+
+}
+else
+{
+    <div><h2 class="bd-content-title" id="title">@Model.Data.Project.Title</h2>
+    <div>@(String.IsNullOrEmpty(Model.Data.Project.Explanation) ? Html.Raw("Açıklama Yok") : Html.Raw(Model.Data.Project.Explanation))</div></div>
+}
 @if (!Model.Success)
 {
     <div class="alert alert-danger">Hata! <br /><small class="form-text text-muted">@Model.Error</small></div>
 }
-
-<div class="row"><div class="col-md-12"><h4 class="bd-content-title float-left">Görevler</h4></div></div>
+<hr />
+<div class="row"><div class="col-md-12"><h5 class="bd-content-title float-left">Görevler</h5></div></div>
 <div class="row mb-2">
     <div class="col-md-12">
         <form action="/work/save" class="row">
@@ -29,7 +89,7 @@
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-9">
-                            <h5>#@item.Id @item.Title</h5>
+                            <h5 onclick="window.location='/work/@item.Url'">#@item.Id @item.Title</h5>
                         </div>
                         <div class="col-md-1" style="text-align:right">
                             <div class="dropdown">
@@ -39,13 +99,13 @@
                                 <div class="dropdown-menu">
                                     @foreach (var e in Model.Data.EventList.Where(x => x.Name != item.EventName))
                                     {
-                                    <form action="/work/updatestatus">
-                                        <input hidden name="id" value="@item.Id" />
-                                        <input hidden name="eventId" value="@e.Id" />
-                                        <input hidden name="managerId" value="@item.ManagerId" />
-                                        <input hidden name="projectId" value="@item.ProjectId" />
-                                        <button type="submit" class="btn btn-link">@e.Name</button>
-                                    </form>
+                                        <form action="/work/updatestatus">
+                                            <input hidden name="id" value="@item.Id" />
+                                            <input hidden name="eventId" value="@e.Id" />
+                                            <input hidden name="managerId" value="@item.ManagerId" />
+                                            <input hidden name="projectId" value="@item.ProjectId" />
+                                            <button type="submit" class="btn btn-link">@e.Name</button>
+                                        </form>
                                     }
                                 </div>
                             </div>
@@ -85,7 +145,3 @@
         </li>
     }
 </ul>
-
-@section Scripts{
-
-}

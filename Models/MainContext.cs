@@ -16,12 +16,12 @@ namespace TaskManager.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasData(new User
-            { Id = 1, NameSurname = "Admin", Email = "admin", Password = "1" });
-            modelBuilder.Entity<Event>().HasData(new Event { Id = 1, Name = "Bekliyor" });
-            modelBuilder.Entity<Event>().HasData(new Event { Id = 2, Name = "Ýþlemde" });
-            modelBuilder.Entity<Event>().HasData(new Event { Id = 3, Name = "Tamamlandý" });
-            modelBuilder.Entity<Event>().HasData(new Event { Id = 4, Name = "Red Edildi" });
-            modelBuilder.Entity<Label>().HasData(new Label { Id = 1, Name = "Web" });
+            { Id = 1, NameSurname = "Admin", Email = "admin", Password = "1", Public=true });
+            modelBuilder.Entity<Event>().HasData(new Event { Id = 1, Name = "Bekliyor", Public = true });
+            modelBuilder.Entity<Event>().HasData(new Event { Id = 2, Name = "Ýþlemde", Public = true });
+            modelBuilder.Entity<Event>().HasData(new Event { Id = 3, Name = "Tamamlandý", Public = true });
+            modelBuilder.Entity<Event>().HasData(new Event { Id = 4, Name = "Red Edildi", Public = true });
+            modelBuilder.Entity<Label>().HasData(new Label { Id = 1, Name = "Web", Public = true });
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -37,6 +37,7 @@ namespace TaskManager.Models
     {
         public int Id { get; set; }
         public short Status { get; set; } = 1;
+        public bool Public { get; set; } = true;
         public DateTime CreateDate { get; set; } = new DateTime(2020, 1, 1);
         public User Creator { get; set; }
         public int CreatorId { get; set; } = 1;
@@ -66,7 +67,9 @@ namespace TaskManager.Models
         [Required]
         [MaxLength(250)]
         public string Title { get; set; }
-        [MaxLength(1000)]
+        [MaxLength(250)]
+        public string Url { get; set; }
+        [MaxLength]
         public string Explanation { get; set; }
         public User Manager { get; set; }
         public int ManagerId { get; set; } = 1;
@@ -78,7 +81,9 @@ namespace TaskManager.Models
         [Required]
         [MaxLength(250)]
         public string Title { get; set; }
-        [MaxLength(1000)]
+        [MaxLength(250)]
+        public string Url { get; set; }
+        [MaxLength]
         public string Explanation { get; set; }
         public Project Project { get; set; }
         public int ProjectId { get; set; }

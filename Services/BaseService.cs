@@ -23,7 +23,18 @@ namespace TaskManager.Services
 
         public IQueryable<T> GetList<T>() where T : BaseEntity
         {
-            return _mainContext.Set<T>().Where(w => w.Status != 0).OrderByDescending(o => o.Id);
+            IQueryable<T> list = _mainContext.Set<T>().Where(w => w.Status != 0).OrderByDescending(o => o.Id);
+            int? user = AppHttpContext.Current.Session.GetInt32("userid");
+            if (user.HasValue)
+            {
+                list = list.Where(w => w.CreatorId == user.Value || w.Public == true);
+            }
+            else
+            {
+                list = list.Where(w => w.Public == true);
+            }
+
+            return list;
         }
         public async Task<T> Get<T>(int id) where T : BaseEntity
         {
@@ -31,9 +42,9 @@ namespace TaskManager.Services
         }
         public async Task<int> Save<T>(T model) where T : BaseEntity
         {
-            User user = AppHttpContext.Current.Session.Get<User>("user");
-            if (user != null)
-                model.CreatorId = user.Id;
+            int? user = AppHttpContext.Current.Session.GetInt32("userid");
+            if (user.HasValue)
+                model.CreatorId = user.Value;
 
             if (model.Id == 0)
                 await _mainContext.Set<T>().AddAsync(model);

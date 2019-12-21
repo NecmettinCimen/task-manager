@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskManager.Models;
 
 namespace TaskManager.Migrations
 {
     [DbContext(typeof(MainContext))]
-    partial class MainContextModelSnapshot : ModelSnapshot
+    [Migration("20191221193622_projectworkurl")]
+    partial class projectworkurl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,9 +39,6 @@ namespace TaskManager.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
-                    b.Property<bool>("Public")
-                        .HasColumnType("bit");
-
                     b.Property<short>("Status")
                         .HasColumnType("smallint");
 
@@ -56,7 +55,6 @@ namespace TaskManager.Migrations
                             CreateDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatorId = 1,
                             Name = "Bekliyor",
-                            Public = true,
                             Status = (short)1
                         },
                         new
@@ -65,7 +63,6 @@ namespace TaskManager.Migrations
                             CreateDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatorId = 1,
                             Name = "İşlemde",
-                            Public = true,
                             Status = (short)1
                         },
                         new
@@ -74,7 +71,6 @@ namespace TaskManager.Migrations
                             CreateDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatorId = 1,
                             Name = "Tamamlandı",
-                            Public = true,
                             Status = (short)1
                         },
                         new
@@ -83,7 +79,6 @@ namespace TaskManager.Migrations
                             CreateDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatorId = 1,
                             Name = "Red Edildi",
-                            Public = true,
                             Status = (short)1
                         });
                 });
@@ -106,9 +101,6 @@ namespace TaskManager.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
-                    b.Property<bool>("Public")
-                        .HasColumnType("bit");
-
                     b.Property<short>("Status")
                         .HasColumnType("smallint");
 
@@ -125,7 +117,6 @@ namespace TaskManager.Migrations
                             CreateDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatorId = 1,
                             Name = "Web",
-                            Public = true,
                             Status = (short)1
                         });
                 });
@@ -151,9 +142,6 @@ namespace TaskManager.Migrations
 
                     b.Property<int>("ManagerId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("Public")
-                        .HasColumnType("bit");
 
                     b.Property<short>("Status")
                         .HasColumnType("smallint");
@@ -206,9 +194,6 @@ namespace TaskManager.Migrations
                         .HasColumnType("nvarchar(150)")
                         .HasMaxLength(150);
 
-                    b.Property<bool>("Public")
-                        .HasColumnType("bit");
-
                     b.Property<short>("Status")
                         .HasColumnType("smallint");
 
@@ -227,7 +212,6 @@ namespace TaskManager.Migrations
                             Email = "admin",
                             NameSurname = "Admin",
                             Password = "1",
-                            Public = true,
                             Status = (short)1
                         });
                 });
@@ -259,9 +243,6 @@ namespace TaskManager.Migrations
 
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("Public")
-                        .HasColumnType("bit");
 
                     b.Property<short>("Status")
                         .HasColumnType("smallint");
@@ -309,9 +290,6 @@ namespace TaskManager.Migrations
                     b.Property<short>("PrevStatus")
                         .HasColumnType("smallint");
 
-                    b.Property<bool>("Public")
-                        .HasColumnType("bit");
-
                     b.Property<short>("Status")
                         .HasColumnType("smallint");
 
@@ -344,9 +322,6 @@ namespace TaskManager.Migrations
 
                     b.Property<int>("LabelId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("Public")
-                        .HasColumnType("bit");
 
                     b.Property<short>("Status")
                         .HasColumnType("smallint");

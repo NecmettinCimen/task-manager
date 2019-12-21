@@ -18,6 +18,6 @@
 <ul class="list-group">
     @foreach (var item in Model.Data)
     {
-        <li class="list-group-item mt-2" style="cursor:pointer" onclick="window.location='/@FriendlyURL.GetURLFromTitle(item.Title)'">@item.Title<br /><small class="form-text text-muted">@item.Explanation</small></li>
+        <li class="list-group-item mt-2" style="cursor:pointer" onclick="window.location='/@item.Url'">@item.Title<br /></li>
     }
 </ul>
