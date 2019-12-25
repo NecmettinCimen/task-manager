@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,7 +42,10 @@ namespace TaskManager.Controllers
                                           Labels = _baseService.GetList<WorkLabels>().Where(wl => wl.WorkId == w.Id).Select(s => s.LabelId).ToList(),
                                           FirstLabelName = (from wl in _baseService.GetList<WorkLabels>().Where(f => f.WorkId == w.Id)
                                                             join l in _baseService.GetList<Label>() on wl.LabelId equals l.Id
-                                                            select l.Name).First()
+                                                            select l.Name).First(),
+                                          WorkProgres = _baseService.GetList<Work>().Count(w => w.ParentWorkId == w.Id) > 0 ?
+                      Convert.ToInt32((Convert.ToDouble(_baseService.GetList<Work>().Count(w => w.ParentWorkId == w.Id && w.EventId != 1)) /
+                     Convert.ToDouble(_baseService.GetList<Work>().Count(w => w.ParentWorkId == w.Id))) * 100) : (w.EventId == 1 ? 0 : 100),
                                       }).ToListAsync(),
                     EventList = await _baseService.GetList<Event>().ToListAsync(),
                     LabelList = await _baseService.GetList<Label>().ToListAsync()
@@ -61,7 +65,7 @@ namespace TaskManager.Controllers
             {
                 result = new ApiResultModel<bool>(await _baseService.Delete<Project>(id));
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
 
                 result = new ApiResultModel<bool>(false, ex.Message);
@@ -79,7 +83,7 @@ namespace TaskManager.Controllers
                 model.Url = FriendlyURL.GetURLFromTitle(model.Title);
 
                 await _baseService.Save(model);
-                
+
                 return Redirect($"/{model.Url}");
             }
             catch (System.Exception ex)
@@ -93,10 +97,13 @@ namespace TaskManager.Controllers
         {
             try
             {
-                model.Url = FriendlyURL.GetURLFromTitle(model.Title);
-                await _baseService.Save(model);
+                Project item = await _baseService.Get<Project>(model.Id);
+                item.Title = model.Title;
+                item.Explanation = model.Explanation;
+                item.Url = FriendlyURL.GetURLFromTitle(item.Title);
+                await _baseService.Save(item);
 
-                return Redirect($"/{model.Url}");
+                return Redirect($"/{item.Url}");
             }
             catch (System.Exception ex)
             {
@@ -104,6 +111,12 @@ namespace TaskManager.Controllers
                 ApiResultModel<List<Project>> result = new ApiResultModel<List<Project>>(null, ex.Message);
                 return View("~/Views/Home/Index.cshtml", result);
             }
+        }
+        public async Task<IActionResult> Remove(int id)
+        {
+            await _baseService.Delete<Project>(id);
+
+            return Redirect("/");
         }
         public async Task<IActionResult> UpdatePublic(int id)
         {

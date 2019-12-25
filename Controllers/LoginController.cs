@@ -22,7 +22,7 @@ namespace TaskManager.Controllers
             if (item != null)
             {
                 HttpContext.Session.SetInt32("userid", item.Id);
-                HttpContext.Session.Set<User>("user", item);
+                HttpContext.Session.SetString("username", item.NameSurname);
             }
 
             return Redirect("/");

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TaskManager.Models;
@@ -59,6 +60,7 @@ namespace TaskManager.Services
         {
 
             T model = await Get<T>(id);
+            model.CreateDate = DateTime.Now;
             model.Status = 0;
 
             _mainContext.Set<T>().Update(model);

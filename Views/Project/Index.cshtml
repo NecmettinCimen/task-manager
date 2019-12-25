@@ -8,27 +8,38 @@
 @if (user.HasValue && user.Value == Model.Data.Project.ManagerId)
 {
 
-    <form action="/project/update" id="projectUpdateForm">
+    <form action="/project/update" id="projectUpdateForm" autocomplete="false">
         <input hidden name="id" value="@Model.Data.Project.Id" />
-        <input hidden name="managerId" value="@Model.Data.Project.ManagerId" />
-        <input hidden name="eventId" value="@Model.Data.Project.EventId" />
-        <input hidden name="title" />
+        <input hidden name="title" id="projecttitle" />
         <input hidden name="explanation" />
-        <div class="row">
-            <div class="col-md-12">
-                <h2 onkeyup="editButtonShow()" class="bd-content-title float-left" id="title" contenteditable="true">@Model.Data.Project.Title</h2>
-                <button id="saveButton" hidden type="button" class="btn btn-outline-secondary float-right">Kaydet</button>
-                @if (Model.Data.Project.Public)
-                {
-                    <button type="button" onclick="setpublic(@Model.Data.Project.Id)" class="btn btn-outline-success float-right">Kimse Görmesin</button>
-                }
-                else
-                {
-                    <button type="button" onclick="setpublic(@Model.Data.Project.Id)" class="btn btn-outline-danger float-right">Herkes Görsün</button>
-                }
+        <div class="row" style="justify-content:space-between">
+            <div class="col-8 pl-4">
+                <div class="row">
+                    <div class="col-12 p-0"><h2 onkeyup="editButtonShow()" class="bd-content-title float-left" id="title" contenteditable="true">@Model.Data.Project.Title</h2></div>
+                    <div class="col-12 p-0"><div id="editor1" onkeyup="editButtonShow()" contenteditable="true">@(String.IsNullOrEmpty(Model.Data.Project.Explanation) ? Html.Raw("Açıklama Ekle") : Html.Raw(Model.Data.Project.Explanation))</div></div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="dropdown dropleft" style="float:right">
+                    <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Ayarlar
+                    </button>
+                    <div class="dropdown-menu">
+                        @if (Model.Data.Project.Public)
+                        {
+                            <a href="#" onclick="setpublic(@Model.Data.Project.Id)" class="dropdown-item">Kimse Görmesin</a>
+                        }
+                        else
+                        {
+                            <a href="#" onclick="setpublic(@Model.Data.Project.Id)" class="dropdown-item">Herkes Görsün</a>
+                        }
+                        <a id="saveButton" class="dropdown-item" href="#">Kaydet</a>
+                        <a class="dropdown-item" href="/project/remove?id=@Model.Data.Project.Id">Sil</a>
+                    </div>
+                </div>
+
             </div>
         </div>
-        <div id="editor1" onkeyup="editButtonShow()" contenteditable="true">@(String.IsNullOrEmpty(Model.Data.Project.Explanation) ? Html.Raw("Açıklama Ekle") : Html.Raw(Model.Data.Project.Explanation))</div>
     </form>
 
     @section Scripts{
@@ -46,7 +57,7 @@
             }
 
             $('#saveButton').on('click', (e) => {
-                $('[name="title"]').val($('#title').text())
+                $('#projecttitle').val($('#title').text())
                 $('[name="explanation"]').val(CKEDITOR.instances.editor1.getData())
                 $('#projectUpdateForm').submit()
             })
@@ -62,8 +73,10 @@
 }
 else
 {
-    <div><h2 class="bd-content-title" id="title">@Model.Data.Project.Title</h2>
-    <div>@(String.IsNullOrEmpty(Model.Data.Project.Explanation) ? Html.Raw("Açıklama Yok") : Html.Raw(Model.Data.Project.Explanation))</div></div>
+    <div>
+        <h2 class="bd-content-title" id="title">@Model.Data.Project.Title</h2>
+        <div>@(String.IsNullOrEmpty(Model.Data.Project.Explanation) ? Html.Raw("Açıklama Yok") : Html.Raw(Model.Data.Project.Explanation))</div>
+    </div>
 }
 @if (!Model.Success)
 {
@@ -71,77 +84,45 @@ else
 }
 <hr />
 <div class="row"><div class="col-md-12"><h5 class="bd-content-title float-left">Görevler</h5></div></div>
-<div class="row mb-2">
-    <div class="col-md-12">
-        <form action="/work/save" class="row">
-            <input hidden name="projectId" value="@Model.Data.Project.Id" />
-            <div class="col-md-11"><input name="title" class="form-control" placeholder="Görev Başlık" /></div>
-            <div class="col-md-1"><button type="submit" class="btn btn-outline-primary float-right">Kaydet</button></div>
-        </form>
-    </div>
-</div>
 
-<ul class="list-group">
-    @foreach (var item in Model.Data.WorkList)
-    {
-        <li class="list-group-item mt-2" style="cursor:pointer">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-9">
-                            <h5 onclick="window.location='/work/@item.Url'">#@item.Id @item.Title</h5>
-                        </div>
-                        <div class="col-md-1" style="text-align:right">
-                            <div class="dropdown">
-                                <button type="button" class="btn btn-outline-info" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    @item.EventName
-                                </button>
-                                <div class="dropdown-menu">
-                                    @foreach (var e in Model.Data.EventList.Where(x => x.Name != item.EventName))
-                                    {
-                                        <form action="/work/updatestatus">
-                                            <input hidden name="id" value="@item.Id" />
-                                            <input hidden name="eventId" value="@e.Id" />
-                                            <input hidden name="managerId" value="@item.ManagerId" />
-                                            <input hidden name="projectId" value="@item.ProjectId" />
-                                            <button type="submit" class="btn btn-link">@e.Name</button>
-                                        </form>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-2" style="text-align:right">
-                            <div class="dropdown">
-                                <button type="button" class="btn btn-outline-warning" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    @item.FirstLabelName
-                                </button>
-                                <div class="dropdown-menu">
-                                    <form action="/work/UpdateLabels" class="px-1">
-                                        <div class="form-group">
-                                            <input hidden name="id" value="0" />
-                                            <input hidden name="workId" value="@item.Id" />
-                                            <input hidden name="projectId" value="@item.ProjectId" />
-                                            <input onsubmit="$(this).submit()" type="text" class="form-control" placeholder="label" name="name">
-                                            <button type="submit" class="btn btn-link" hidden></button>
-                                        </div>
+@if (user.HasValue)
+{
+    <div class="row mt-2 mb-2">
+        <div class="col-12">
+            <form action="/project/save" class="row" autocomplete="false">
+                <input hidden name="projectId" value="@Model.Data.Project.Id" />
+                <div class="col-10"><input required name="title" class="form-control" placeholder="Görev Başlık" /></div>
+                <div class="col-2"><button type="submit" class="btn btn-outline-primary float-right">Kaydet</button></div>
+            </form>
+        </div>
+    </div>
+}
+    <ul class="list-group">
+        @foreach (var item in Model.Data.WorkList)
+        {
+            <li class="list-group-item mt-2">
+                <div class="row" style="justify-content:space-between">
+                    <label style="cursor:pointer" onclick="window.location='/work/@item.Url'">@item.Title</label>
+                    <div style="cursor:pointer">
+                        <div class="dropdown">
+                            <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                @item.EventName
+                            </a>
+                            <div class="dropdown-menu">
+                                @foreach (var e in Model.Data.EventList.Where(x => x.Name != item.EventName))
+                                {
+                                    <form action="/work/updatestatus" autocomplete="false">
+                                        <input hidden name="id" value="@item.Id" />
+                                        <input hidden name="eventId" value="@e.Id" />
+                                        <input hidden name="managerId" value="@item.ManagerId" />
+                                        <input hidden name="projectId" value="@item.ProjectId" />
+                                        <button type="submit" class="btn btn-link">@e.Name</button>
                                     </form>
-                                    @foreach (var l in Model.Data.LabelList)
-                                    {
-                                        <form action="/work/UpdateLabels" class="px-1">
-                                            <div class="form-group">
-                                                <input hidden name="id" value="@l.Id" />
-                                                <input hidden name="workId" value="@item.Id" />
-                                                <input hidden name="projectId" value="@item.ProjectId" />
-                                                <button type="submit" class="btn btn-sm btn-block @(item.Labels.Contains(l.Id)?"btn-primary":"btn-link")">@l.Name</button>
-                                            </div>
-                                        </form>
-                                    }
-                                </div>
+                                }
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </li>
-    }
-</ul>
+            </li>
+        }
+    </ul>

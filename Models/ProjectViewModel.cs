@@ -15,5 +15,6 @@ namespace TaskManager.Models
         public string EventName { get; set; }
         public string FirstLabelName { get; set; }
         public List<int> Labels { get; set; }
+        public int WorkProgres { get; set; }
     }
 }

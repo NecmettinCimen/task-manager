@@ -1,4 +1,4 @@
-﻿@model ApiResultModel<List<Project>>
+﻿@model ApiResultModel<List<HomeIndexViewModel>>
 @{
     ViewData["Title"] = "Projeler";
 }
@@ -7,17 +7,29 @@
 {
     <div class="alert alert-danger">Hata! <br /><small class="form-text text-muted">@Model.Error</small></div>
 }
-<div class="row mt-2 mb-2">
-    <div class="col-md-12">
-        <form action="/project/save" class="row">
-            <div class="col-md-11"><input name="title" class="form-control" placeholder="Proje Başlık" /></div>
-            <div class="col-md-1"><button type="submit" class="btn btn-outline-primary float-right">Kaydet</button></div>
-        </form>
+@if (Context.Session.GetInt32("userid").HasValue)
+{
+    <div class="row mt-2 mb-2">
+        <div class="col-12">
+            <form action="/project/save" class="row" autocomplete="false">
+                <div class="col-10"><input required name="title" class="form-control" placeholder="Proje Başlık" /></div>
+                <div class="col-2"><button type="submit" class="btn btn-outline-primary float-right">Kaydet</button></div>
+            </form>
+        </div>
     </div>
-</div>
+}
 <ul class="list-group">
     @foreach (var item in Model.Data)
     {
-        <li class="list-group-item mt-2" style="cursor:pointer" onclick="window.location='/@item.Url'">@item.Title<br /></li>
+        <li class="list-group-item mt-2" style="cursor:pointer" onclick="window.location='/@item.Url'">
+            <div class="row">
+                <div class="col-8">@item.Title</div>
+                <div class="col-3">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: @item.WorkProgres%" aria-valuenow="@item.WorkProgres" aria-valuemin="0" aria-valuemax="100">@item.WorkProgres.ToString("N2")%</div>
+                    </div>
+                </div>
+            </div>
+        </li>
     }
 </ul>

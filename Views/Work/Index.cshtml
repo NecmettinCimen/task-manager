@@ -1,38 +1,91 @@
 ﻿@model ApiResultModel<WorkViewModel>
 @{
     ViewData["Title"] = Model.Data.Title;
+    int? user = Context.Session.GetInt32("userid");
 }
-    <form action="/Work/update" id="projectUpdateForm">
+
+<div style="cursor:pointer" onclick="window.location='/@Model.Data.ProjectUrl'" class="row"><div class="col-12"><h6>@Model.Data.ProjectName</h6></div></div>
+
+@if (user.HasValue && user.Value == Model.Data.ProjectManagerId)
+{
+    <form action="/work/update" id="projectUpdateForm" autocomplete="false">
         <input hidden name="id" value="@Model.Data.Id" />
-        <input hidden name="title" />
+        <input hidden name="title" id="projecttitle" />
         <input hidden name="explanation" />
-        <div class="row">
-            <div class="col-md-12"><small>@Model.Data.ProjectName</small></div>
-            <hr/>
-            <div class="col-md-12">
-                <h2 onkeyup="editButtonShow()" class="bd-content-title float-left" id="title" contenteditable="true">@Model.Data.Title</h2>
-                <button id="saveButton" hidden type="button" class="btn btn-outline-secondary float-right">Kaydet</button>
+        <div class="row" style="justify-content:space-between">
+            <div class="col-8 pl-4">
+                <div class="row">
+                    <div class="col-12 p-0">
+                        <h2 onkeyup="editButtonShow()" class="bd-content-title float-left" id="title" contenteditable="true">@Model.Data.Title</h2>
+                    </div>
+                    <div class="col-12 p-0"><div id="editor1" onkeyup="editButtonShow()" contenteditable="true">@(String.IsNullOrEmpty(Model.Data.Explanation) ? Html.Raw("Açıklama Ekle") : Html.Raw(Model.Data.Explanation))</div></div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="dropdown dropleft" style="float:right">
+                    <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Ayarlar
+                    </button>
+                    <div class="dropdown-menu">
+                        <a id="saveButton" class="dropdown-item" href="#">Kaydet</a>
+                        <a class="dropdown-item" href="/work/remove?id=@Model.Data.Id">Sil</a>
+                    </div>
+                </div>
+
             </div>
         </div>
-        <div id="editor1" onkeyup="editButtonShow()" contenteditable="true">@(String.IsNullOrEmpty(Model.Data.Explanation) ? Html.Raw("Açıklama Ekle") : Html.Raw(Model.Data.Explanation))</div>
     </form>
+
+    @section Scripts{
+        <script src="https://cdn.ckeditor.com/4.13.1/standard-all/ckeditor.js"></script>
+
+        <script>
+            CKEDITOR.disableAutoInline = true;
+            CKEDITOR.inline('editor1', {
+                extraPlugins: 'sourcedialog'
+            });
+
+
+            function editButtonShow() {
+                $('#saveButton').removeAttr('hidden')
+            }
+
+            $('#saveButton').on('click', (e) => {
+                $('#projecttitle').val($('#title').text())
+                $('[name="explanation"]').val(CKEDITOR.instances.editor1.getData())
+                $('#projectUpdateForm').submit()
+            })
+        </script>
+    }
+
+}
+else
+{
+    <div>
+        <h2 class="bd-content-title" id="title">@Model.Data.Title</h2>
+        <div>@(String.IsNullOrEmpty(Model.Data.Explanation) ? Html.Raw("Açıklama Yok") : Html.Raw(Model.Data.Explanation))</div>
+    </div>
+}
+
 @if (!Model.Success)
 {
     <div class="alert alert-danger">Hata! <br /><small class="form-text text-muted">@Model.Error</small></div>
 }
-
+<hr />
 <div class="row"><div class="col-md-12"><h4 class="bd-content-title float-left">Alt Görevler</h4></div></div>
-<div class="row mb-2">
-    <div class="col-md-12">
-        <form action="/work/save" class="row">
-            <input hidden name="parentWorkId" value="@Model.Data.Id" />
-            <input hidden name="projectId" value="@Model.Data.ProjectId" />
-            <div class="col-md-11"><input name="title" class="form-control" placeholder="Görev Başlık" /></div>
-            <div class="col-md-1"><button type="submit" class="btn btn-outline-primary float-right">Kaydet</button></div>
-        </form>
+@if (Context.Session.GetInt32("userid").HasValue)
+{
+    <div class="row mb-2">
+        <div class="col-md-12">
+            <form action="/work/save" class="row" autocomplete="false">
+                <input hidden name="parentWorkId" value="@Model.Data.Id" />
+                <input hidden name="projectId" value="@Model.Data.ProjectId" />
+                <div class="col-md-11"><input name="title" class="form-control" placeholder="Görev Başlık" /></div>
+                <div class="col-md-1"><button type="submit" class="btn btn-outline-primary float-right">Kaydet</button></div>
+            </form>
+        </div>
     </div>
-</div>
-
+}
 <ul class="list-group">
     @foreach (var item in Model.Data.ChildWorkList)
     {
@@ -51,7 +104,7 @@
                                 <div class="dropdown-menu">
                                     @foreach (var e in Model.Data.EventList.Where(x => x.Name != item.EventName))
                                     {
-                                        <form action="/work/updatestatus">
+                                        <form action="/work/updatestatus" autocomplete="false">
                                             <input hidden name="id" value="@item.Id" />
                                             <input hidden name="eventId" value="@e.Id" />
                                             <input hidden name="managerId" value="@item.ManagerId" />
@@ -68,7 +121,7 @@
                                     @item.FirstLabelName
                                 </button>
                                 <div class="dropdown-menu">
-                                    <form action="/work/UpdateLabels" class="px-1">
+                                    <form action="/work/UpdateLabels" class="px-1" autocomplete="false">
                                         <div class="form-group">
                                             <input hidden name="id" value="0" />
                                             <input hidden name="workId" value="@item.Id" />
@@ -97,25 +150,3 @@
         </li>
     }
 </ul>
-
-@section Scripts{
-    <script src="https://cdn.ckeditor.com/4.13.1/standard-all/ckeditor.js"></script>
-
-    <script>
-        CKEDITOR.disableAutoInline = true;
-        CKEDITOR.inline('editor1', {
-            extraPlugins: 'sourcedialog'
-        });
-
-
-        function editButtonShow() {
-            $('#saveButton').removeAttr('hidden')
-        }
-
-        $('#saveButton').on('click', (e) => {
-            $('[name="title"]').val($('#title').text())
-            $('[name="explanation"]').val(CKEDITOR.instances.editor1.getData())
-            $('#projectUpdateForm').submit()
-        })
-    </script>
-}

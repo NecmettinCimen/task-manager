@@ -32,6 +32,8 @@ namespace TaskManager.Controllers
                     CreateDate = model.CreateDate,
                     ProjectName = project.Title,
                     ProjectId = model.ProjectId,
+                    ProjectManagerId = project.ManagerId,
+                    ProjectUrl = project.Url,
                     ChildWorkList = await (from w in _baseService.GetList<Work>()
                                            where w.ParentWorkId == model.Id
                                            join e in _baseService.GetList<Event>() on w.EventId equals e.Id
@@ -86,7 +88,7 @@ namespace TaskManager.Controllers
             if (model.ParentWorkId.HasValue)
             {
                 Work work = await _baseService.Get<Work>(model.ParentWorkId.Value);
-                return Redirect($"/work/{model.Url}");
+                return Redirect($"/work/{work.Url}");
             }
             else
             {
@@ -120,7 +122,24 @@ namespace TaskManager.Controllers
             return Redirect($"/{project.Url}");
         }
 
+        public async Task<IActionResult> Remove(int id)
+        {
+            Work item = await _baseService.Get<Work>(id);
+                
+            await _baseService.Delete<Work>(id);
 
+
+            if (item.ParentWorkId.HasValue)
+            {
+                Work work = await _baseService.Get<Work>(item.ParentWorkId.Value);
+                return Redirect($"/work/{work.Url}");
+            }
+            else
+            {
+                Project project = await _baseService.Get<Project>(item.ProjectId);
+                return Redirect($"/{project.Url}");
+            }
+        }
 
         public async Task<IActionResult> UpdateLabels(UpdateLabelsDto model)
         {

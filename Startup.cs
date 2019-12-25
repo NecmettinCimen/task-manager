@@ -32,7 +32,7 @@ namespace TaskManager
 
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.MaxValue;
+                options.IdleTimeout = TimeSpan.FromDays(7);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });

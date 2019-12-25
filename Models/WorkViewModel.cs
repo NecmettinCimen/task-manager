@@ -12,5 +12,7 @@ namespace TaskManager.Models
         public List<Event> EventList { get; internal set; }
         public List<Label> LabelList { get; internal set; }
         public string ProjectName { get; internal set; }
+        public string ProjectUrl { get; internal set; }
+        public int ProjectManagerId { get; internal set; }
     }
 }
