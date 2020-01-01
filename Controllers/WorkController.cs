@@ -28,6 +28,7 @@ namespace TaskManager.Controllers
                 {
                     Id = model.Id,
                     Title = model.Title,
+                    Url = model.Url,
                     Explanation = model.Explanation,
                     CreateDate = model.CreateDate,
                     ProjectName = project.Title,
@@ -113,19 +114,26 @@ namespace TaskManager.Controllers
         public async Task<IActionResult> UpdateStatus(Work model)
         {
             Work item = await _baseService.Get<Work>(model.Id);
-            Project project = await _baseService.Get<Project>(model.ProjectId);
             item.EventId = model.EventId;
 
             await _baseService.Save(item);
             await _baseService.Save(new WorkHistory() { PrevStatus = model.Status, WorkId = model.Id, ManagerId = model.ManagerId });
 
-            return Redirect($"/{project.Url}");
+            if (model.ParentWorkId.HasValue)
+            {
+                return Redirect($"/work/{model.Url}");
+            }
+            else
+            {
+                Project project = await _baseService.Get<Project>(model.ProjectId);
+                return Redirect($"/{project.Url}");
+            }
         }
 
         public async Task<IActionResult> Remove(int id)
         {
             Work item = await _baseService.Get<Work>(id);
-                
+
             await _baseService.Delete<Work>(id);
 
 

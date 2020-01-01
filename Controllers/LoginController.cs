@@ -23,6 +23,8 @@ namespace TaskManager.Controllers
             {
                 HttpContext.Session.SetInt32("userid", item.Id);
                 HttpContext.Session.SetString("username", item.NameSurname);
+                Response.Cookies.Append("userid", item.Id.ToString());
+                Response.Cookies.Append("username", item.NameSurname);
             }
 
             return Redirect("/");
@@ -31,6 +33,9 @@ namespace TaskManager.Controllers
         [HttpPost]
         public IActionResult Logout()
         {
+            Response.Cookies.Delete("userid");
+            Response.Cookies.Delete("username");
+
             HttpContext.Session.Clear();
 
             return Redirect("/");

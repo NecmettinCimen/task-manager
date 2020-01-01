@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -23,6 +24,15 @@ namespace TaskManager.Controllers
 
         public async Task<IActionResult> Index()
         {
+
+            int? user = AppHttpContext.Current.Session.GetInt32("userid");
+            int userid = Request.Cookies["userid"] == null ? 0 : int.Parse(Request.Cookies["userid"]);
+            if (!user.HasValue && userid != 0)
+            {
+                HttpContext.Session.SetInt32("userid", userid);
+                HttpContext.Session.SetString("username", Request.Cookies["username"]);
+            }
+
             List<Project> data = await _baseService.GetList<Project>().ToListAsync();
             var result = data.Select(s => new HomeIndexViewModel
             {
@@ -31,7 +41,7 @@ namespace TaskManager.Controllers
                 Title = s.Title,
                 WorkProgres = _baseService.GetList<Work>().Count(w => w.ProjectId == s.Id) > 0 ?
                       Convert.ToInt32((Convert.ToDouble(_baseService.GetList<Work>().Count(w => w.ProjectId == s.Id && w.EventId != 1)) /
-                     Convert.ToDouble(_baseService.GetList<Work>().Count(w => w.ProjectId == s.Id))) * 100): 0,
+                     Convert.ToDouble(_baseService.GetList<Work>().Count(w => w.ProjectId == s.Id))) * 100) : 0,
             }).ToList();
             return View(new ApiResultModel<List<HomeIndexViewModel>>(result));
         }

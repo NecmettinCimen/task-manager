@@ -89,7 +89,7 @@ else
 {
     <div class="row mt-2 mb-2">
         <div class="col-12">
-            <form action="/project/save" class="row" autocomplete="false">
+            <form action="/work/save" class="row" autocomplete="false">
                 <input hidden name="projectId" value="@Model.Data.Project.Id" />
                 <div class="col-10"><input required name="title" class="form-control" placeholder="Görev Başlık" /></div>
                 <div class="col-2"><button type="submit" class="btn btn-outline-primary float-right">Kaydet</button></div>
@@ -102,7 +102,7 @@ else
         {
             <li class="list-group-item mt-2">
                 <div class="row" style="justify-content:space-between">
-                    <label style="cursor:pointer" onclick="window.location='/work/@item.Url'">@item.Title</label>
+                    <h5 style="cursor:pointer" onclick="window.location='/work/@item.Url'">#@item.Id @item.Title</h5>
                     <div style="cursor:pointer">
                         <div class="dropdown">
                             <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

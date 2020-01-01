@@ -18,8 +18,8 @@ namespace TaskManager.Models
             modelBuilder.Entity<User>().HasData(new User
             { Id = 1, NameSurname = "Admin", Email = "admin", Password = "1", Public=true });
             modelBuilder.Entity<Event>().HasData(new Event { Id = 1, Name = "Bekliyor", Public = true });
-            modelBuilder.Entity<Event>().HasData(new Event { Id = 2, Name = "Ýþlemde", Public = true });
-            modelBuilder.Entity<Event>().HasData(new Event { Id = 3, Name = "Tamamlandý", Public = true });
+            modelBuilder.Entity<Event>().HasData(new Event { Id = 2, Name = "ï¿½ï¿½lemde", Public = true });
+            modelBuilder.Entity<Event>().HasData(new Event { Id = 3, Name = "Tamamlandï¿½", Public = true });
             modelBuilder.Entity<Event>().HasData(new Event { Id = 4, Name = "Red Edildi", Public = true });
             modelBuilder.Entity<Label>().HasData(new Label { Id = 1, Name = "Web", Public = true });
         }

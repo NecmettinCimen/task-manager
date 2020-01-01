@@ -94,7 +94,7 @@ else
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-9">
-                            <h5>#@item.Id @item.Title</h5>
+                            <h5 style="cursor:pointer" onclick="window.location='/work/@item.Url'">#@item.Id @item.Title</h5>
                         </div>
                         <div class="col-md-1" style="text-align:right">
                             <div class="dropdown">
@@ -109,6 +109,7 @@ else
                                             <input hidden name="eventId" value="@e.Id" />
                                             <input hidden name="managerId" value="@item.ManagerId" />
                                             <input hidden name="projectId" value="@item.ProjectId" />
+                                            <input hidden name="url" value="@Model.Data.Url" />
                                             <button type="submit" class="btn btn-link">@e.Name</button>
                                         </form>
                                     }

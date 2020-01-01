@@ -74,6 +74,10 @@ namespace TaskManager
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseCookiePolicy(new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = SameSiteMode.Strict,
+            });
 
             app.UseEndpoints(endpoints =>
             {
@@ -83,7 +87,7 @@ namespace TaskManager
                      new { controller = "Work", action = "Index" });
                 endpoints.MapControllerRoute(
                      "project",
-                     "{project}",
+                     "{project}/{key?}",
                      new { controller = "Project", action = "Index" });
 
                 endpoints.MapControllerRoute(

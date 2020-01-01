@@ -18,7 +18,7 @@ namespace TaskManager.Controllers
             _baseService = baseService;
         }
 
-        public async Task<ActionResult> Index(string project)
+        public async Task<ActionResult> Index(string project, string key)
         {
             Project model = _baseService.GetList<Project>().FirstOrDefault(f => f.Url == project);
             if (model != null)
@@ -94,6 +94,25 @@ namespace TaskManager.Controllers
         }
 
         public async Task<IActionResult> Update(Project model)
+        {
+            try
+            {
+                Project item = await _baseService.Get<Project>(model.Id);
+                item.Title = model.Title;
+                item.Explanation = model.Explanation;
+                item.Url = FriendlyURL.GetURLFromTitle(item.Title);
+                await _baseService.Save(item);
+
+                return Redirect($"/{item.Url}");
+            }
+            catch (System.Exception ex)
+            {
+
+                ApiResultModel<List<Project>> result = new ApiResultModel<List<Project>>(null, ex.Message);
+                return View("~/Views/Home/Index.cshtml", result);
+            }
+        }
+        public async Task<IActionResult> Share(Project model)
         {
             try
             {

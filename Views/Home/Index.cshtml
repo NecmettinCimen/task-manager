@@ -18,10 +18,10 @@
         </div>
     </div>
 }
-<ul class="list-group">
+<ul class="list-group" id="sortable">
     @foreach (var item in Model.Data)
     {
-        <li class="list-group-item mt-2" style="cursor:pointer" onclick="window.location='/@item.Url'">
+        <li id="@item.Id" class="list-group-item mt-2 sortlist" style="cursor:pointer" onclick="window.location='/@item.Url'">
             <div class="row">
                 <div class="col-8">@item.Title</div>
                 <div class="col-3">
@@ -33,3 +33,14 @@
         </li>
     }
 </ul>
+@section Scripts{ 
+    <script>
+        $(function () {
+            $("#sortable").sortable({
+                over: () => {
+                    console.log($(".sortlist").map((x,i)=>console.log(x,i.id)));
+                }
+            });
+        });
+    </script>
+}
