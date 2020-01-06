@@ -30,10 +30,15 @@ namespace TaskManager
         {
             services.AddDistributedMemoryCache();
 
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromDays(7);
-                options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -68,6 +73,7 @@ namespace TaskManager
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
 
             app.UseSession();
 

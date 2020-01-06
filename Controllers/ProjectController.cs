@@ -117,9 +117,8 @@ namespace TaskManager.Controllers
             try
             {
                 Project item = await _baseService.Get<Project>(model.Id);
-                item.Title = model.Title;
-                item.Explanation = model.Explanation;
-                item.Url = FriendlyURL.GetURLFromTitle(item.Title);
+                
+                
                 await _baseService.Save(item);
 
                 return Redirect($"/{item.Url}");

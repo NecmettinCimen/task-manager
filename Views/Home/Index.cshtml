@@ -1,8 +1,8 @@
-﻿@model ApiResultModel<List<HomeIndexViewModel>>
+﻿@model ApiResultModel<HomeIndexViewModel>
 @{
     ViewData["Title"] = "Projeler";
 }
-<div class="row"><div class="col-md-12"><h2 class="bd-content-title float-left">Projeler</h2></div></div>
+<div class="row"><div class="col-md-6"><h2 class="bd-content-title float-left">Projeler</h2></div><div class="col-md-6"><h2 class="bd-content-title float-left">Görevler</h2></div></div>
 @if (!Model.Success)
 {
     <div class="alert alert-danger">Hata! <br /><small class="form-text text-muted">@Model.Error</small></div>
@@ -10,7 +10,7 @@
 @if (Context.Session.GetInt32("userid").HasValue)
 {
     <div class="row mt-2 mb-2">
-        <div class="col-12">
+        <div class="col-6">
             <form action="/project/save" class="row" autocomplete="false">
                 <div class="col-10"><input required name="title" class="form-control" placeholder="Proje Başlık" /></div>
                 <div class="col-2"><button type="submit" class="btn btn-outline-primary float-right">Kaydet</button></div>
@@ -18,27 +18,45 @@
         </div>
     </div>
 }
-<ul class="list-group" id="sortable">
-    @foreach (var item in Model.Data)
-    {
-        <li id="@item.Id" class="list-group-item mt-2 sortlist" style="cursor:pointer" onclick="window.location='/@item.Url'">
-            <div class="row">
-                <div class="col-8">@item.Title</div>
-                <div class="col-3">
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: @item.WorkProgres%" aria-valuenow="@item.WorkProgres" aria-valuemin="0" aria-valuemax="100">@item.WorkProgres.ToString("N2")%</div>
+<div class="row">
+    <div class="col-md-6">
+        <ul class="list-group" id="sortable">
+            @foreach (var item in Model.Data.ProjectList)
+            {
+                <li id="@item.Id" class="list-group-item mt-2 sortlist" style="cursor:pointer" onclick="window.location='/@item.Url'">
+                    <div class="row">
+                        <div class="col-8">@item.Title</div>
+                        <div class="col-3">
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: @item.WorkProgres%" aria-valuenow="@item.WorkProgres" aria-valuemin="0" aria-valuemax="100">@item.WorkProgres.ToString("N2")%</div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </li>
-    }
-</ul>
-@section Scripts{ 
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="col-md-6">
+        <ul class="list-group" id="sortable">
+            @foreach (var item in Model.Data.WorkList)
+            {
+                <li class="list-group-item mt-2">
+                    <div class="row" style="justify-content:space-between">
+                        <h5 style="cursor:pointer" onclick="window.location='/work/@item.Url'">#@item.Id @item.Title</h5>
+                        <label>@item.Event</label>
+                        <label>@item.Project</label>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+@section Scripts{
     <script>
         $(function () {
             $("#sortable").sortable({
                 over: () => {
-                    console.log($(".sortlist").map((x,i)=>console.log(x,i.id)));
+                    console.log($(".sortlist").map((x, i) => console.log(x, i.id)));
                 }
             });
         });
