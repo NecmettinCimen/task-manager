@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using TaskManager.Models;
-using TaskManager.Services;
 
 namespace TaskManager.Controllers
 {
-
     public interface IBaseController<T> where T : BaseEntity
     {
         Task<IActionResult> List();
@@ -14,5 +11,4 @@ namespace TaskManager.Controllers
         Task<IActionResult> Save(T model);
         Task<IActionResult> Delete(int id);
     }
-
 }

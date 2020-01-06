@@ -1,9 +1,10 @@
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using TaskManager.Models;
+
 namespace TaskManager.Services
 {
     public interface IBaseService
@@ -16,7 +17,8 @@ namespace TaskManager.Services
 
     public class BaseService : IBaseService
     {
-        readonly MainContext _mainContext;
+        private readonly MainContext _mainContext;
+
         public BaseService(MainContext mainContext)
         {
             _mainContext = mainContext;
@@ -25,25 +27,23 @@ namespace TaskManager.Services
         public IQueryable<T> GetList<T>() where T : BaseEntity
         {
             IQueryable<T> list = _mainContext.Set<T>().Where(w => w.Status != 0).OrderByDescending(o => o.Id);
-            int? user = AppHttpContext.Current.Session.GetInt32("userid");
+            var user = AppHttpContext.Current.Session.GetInt32("userid");
             if (user.HasValue)
-            {
-                list = list.Where(w => w.CreatorId == user.Value || w.Public == true);
-            }
+                list = list.Where(w => w.CreatorId == user.Value || w.Public);
             else
-            {
-                list = list.Where(w => w.Public == true);
-            }
+                list = list.Where(w => w.Public);
 
             return list;
         }
+
         public async Task<T> Get<T>(int id) where T : BaseEntity
         {
             return await _mainContext.Set<T>().Where(w => w.Status != 0).FirstAsync(f => f.Id == id);
         }
+
         public async Task<int> Save<T>(T model) where T : BaseEntity
         {
-            int? user = AppHttpContext.Current.Session.GetInt32("userid");
+            var user = AppHttpContext.Current.Session.GetInt32("userid");
             if (user.HasValue)
                 model.CreatorId = user.Value;
 
@@ -56,10 +56,10 @@ namespace TaskManager.Services
 
             return model.Id;
         }
+
         public async Task<bool> Delete<T>(int id) where T : BaseEntity
         {
-
-            T model = await Get<T>(id);
+            var model = await Get<T>(id);
             model.CreateDate = DateTime.Now;
             model.Status = 0;
 

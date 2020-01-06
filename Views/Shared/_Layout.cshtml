@@ -1,76 +1,76 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - TaskManager</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css"/>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Görev Yönetimi</a>
-                @if (!Context.Session.GetInt32("userid").HasValue)
-                {
-                    <div class="form-inline">
-                        <div class="dropdown dropleft">
-                            <button class="btn btn-outline-success my-2 my-sm-0 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Giriş
-                            </button>
-                            <div class="dropdown-menu p-2">
-                                <form method="post" action="/login">
-                                    <div class="form-group">
-                                        <label>Eposta</label>
-                                        <input name="email" type="text" class="form-control" placeholder="eposta@eposta.com">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Parola</label>
-                                        <input name="password" type="password" class="form-control" placeholder="******">
-                                    </div>
-                                    <button type="submit" class="btn btn-block mt-1 btn-primary">Giriş</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                }
-                else
-                {
-                    <div class="form-inline">
-                        <div class="dropdown dropleft">
-                            <button class="btn btn-outline-success my-2 my-sm-0 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                @(Context.Session.GetString("username"))
-                            </button>
-                            <div class="dropdown-menu p-2">
-                                <form method="post" action="/login/logout">
-                                    <button type="submit" class="btn btn-block mt-1 btn-danger">Oturumu Kapat</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <partial name="_CookieConsentPartial" />
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container">
-            &copy; 2019
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Görev Yönetimi</a>
+            @if (!Context.Session.GetInt32("userid").HasValue)
+            {
+                <div class="form-inline">
+                    <div class="dropdown dropleft">
+                        <button class="btn btn-outline-success my-2 my-sm-0 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Giriş
+                        </button>
+                        <div class="dropdown-menu p-2">
+                            <form method="post" action="/login">
+                                <div class="form-group">
+                                    <label>Eposta</label>
+                                    <input name="email" type="text" class="form-control" placeholder="eposta@eposta.com">
+                                </div>
+                                <div class="form-group">
+                                    <label>Parola</label>
+                                    <input name="password" type="password" class="form-control" placeholder="******">
+                                </div>
+                                <button type="submit" class="btn btn-block mt-1 btn-primary">Giriş</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="form-inline">
+                    <div class="dropdown dropleft">
+                        <button class="btn btn-outline-success my-2 my-sm-0 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @(Context.Session.GetString("username"))
+                        </button>
+                        <div class="dropdown-menu p-2">
+                            <form method="post" action="/login/logout">
+                                <button type="submit" class="btn btn-block mt-1 btn-danger">Oturumu Kapat</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
+    </nav>
+</header>
+<div class="container">
+    <partial name="_CookieConsentPartial"/>
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+
+<footer class="border-top footer text-muted">
+    <div class="container">
+        &copy; 2019
+    </div>
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@RenderSection("Scripts", false)
 </body>
 </html>

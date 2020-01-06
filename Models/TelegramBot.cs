@@ -7,8 +7,10 @@ namespace TaskManager.Models
     {
         public static void Send(string msg)
         {
-            var result = new HttpClient().GetAsync($"https://taskmanagerbotapi.necmettincimen.com/?msg={msg} # Necmettin").Result.Content;
+            var result = new HttpClient()
+                .GetAsync($"https://taskmanagerbotapi.necmettincimen.com/?msg={msg} # Necmettin").Result.Content;
         }
+
         public static async Task SendAsync(string msg)
         {
             await new HttpClient().GetAsync($"https://taskmanagerbotapi.necmettincimen.com/?msg={msg} # Necmettin");

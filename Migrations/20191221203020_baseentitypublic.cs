@@ -7,119 +7,119 @@ namespace TaskManager.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<bool>(
-                name: "Public",
-                table: "Works",
+                "Public",
+                "Works",
                 nullable: false,
                 defaultValue: true);
 
             migrationBuilder.AddColumn<bool>(
-                name: "Public",
-                table: "WorkLabels",
+                "Public",
+                "WorkLabels",
                 nullable: false,
                 defaultValue: true);
 
             migrationBuilder.AddColumn<bool>(
-                name: "Public",
-                table: "WorkHistorys",
+                "Public",
+                "WorkHistorys",
                 nullable: false,
                 defaultValue: true);
 
             migrationBuilder.AddColumn<bool>(
-                name: "Public",
-                table: "Users",
+                "Public",
+                "Users",
                 nullable: false,
                 defaultValue: true);
 
             migrationBuilder.AddColumn<bool>(
-                name: "Public",
-                table: "Projects",
+                "Public",
+                "Projects",
                 nullable: false,
                 defaultValue: true);
 
             migrationBuilder.AddColumn<bool>(
-                name: "Public",
-                table: "Labels",
+                "Public",
+                "Labels",
                 nullable: false,
                 defaultValue: true);
 
             migrationBuilder.AddColumn<bool>(
-                name: "Public",
-                table: "Events",
+                "Public",
+                "Events",
                 nullable: false,
                 defaultValue: true);
 
             migrationBuilder.UpdateData(
-                table: "Events",
-                keyColumn: "Id",
-                keyValue: 1,
-                column: "Public",
-                value: true);
+                "Events",
+                "Id",
+                1,
+                "Public",
+                true);
 
             migrationBuilder.UpdateData(
-                table: "Events",
-                keyColumn: "Id",
-                keyValue: 2,
-                column: "Public",
-                value: true);
+                "Events",
+                "Id",
+                2,
+                "Public",
+                true);
 
             migrationBuilder.UpdateData(
-                table: "Events",
-                keyColumn: "Id",
-                keyValue: 3,
-                column: "Public",
-                value: true);
+                "Events",
+                "Id",
+                3,
+                "Public",
+                true);
 
             migrationBuilder.UpdateData(
-                table: "Events",
-                keyColumn: "Id",
-                keyValue: 4,
-                column: "Public",
-                value: true);
+                "Events",
+                "Id",
+                4,
+                "Public",
+                true);
 
             migrationBuilder.UpdateData(
-                table: "Labels",
-                keyColumn: "Id",
-                keyValue: 1,
-                column: "Public",
-                value: true);
+                "Labels",
+                "Id",
+                1,
+                "Public",
+                true);
 
             migrationBuilder.UpdateData(
-                table: "Users",
-                keyColumn: "Id",
-                keyValue: 1,
-                column: "Public",
-                value: true);
+                "Users",
+                "Id",
+                1,
+                "Public",
+                true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Public",
-                table: "Works");
+                "Public",
+                "Works");
 
             migrationBuilder.DropColumn(
-                name: "Public",
-                table: "WorkLabels");
+                "Public",
+                "WorkLabels");
 
             migrationBuilder.DropColumn(
-                name: "Public",
-                table: "WorkHistorys");
+                "Public",
+                "WorkHistorys");
 
             migrationBuilder.DropColumn(
-                name: "Public",
-                table: "Users");
+                "Public",
+                "Users");
 
             migrationBuilder.DropColumn(
-                name: "Public",
-                table: "Projects");
+                "Public",
+                "Projects");
 
             migrationBuilder.DropColumn(
-                name: "Public",
-                table: "Labels");
+                "Public",
+                "Labels");
 
             migrationBuilder.DropColumn(
-                name: "Public",
-                table: "Events");
+                "Public",
+                "Events");
         }
     }
 }

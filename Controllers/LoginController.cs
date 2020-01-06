@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 using TaskManager.Models;
 using TaskManager.Services;
 
@@ -9,7 +9,8 @@ namespace TaskManager.Controllers
 {
     public class LoginController : Controller
     {
-        readonly IBaseService _baseService;
+        private readonly IBaseService _baseService;
+
         public LoginController(IBaseService baseService)
         {
             _baseService = baseService;
@@ -18,7 +19,8 @@ namespace TaskManager.Controllers
         [HttpPost]
         public async Task<IActionResult> IndexAsync(User model)
         {
-            User item = await _baseService.GetList<User>().FirstOrDefaultAsync(f => f.Email == model.Email && f.Password == model.Password);
+            var item = await _baseService.GetList<User>()
+                .FirstOrDefaultAsync(f => f.Email == model.Email && f.Password == model.Password);
             if (item != null)
             {
                 HttpContext.Session.SetInt32("userid", item.Id);

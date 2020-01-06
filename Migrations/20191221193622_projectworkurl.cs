@@ -7,8 +7,8 @@ namespace TaskManager.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "Explanation",
-                table: "Works",
+                "Explanation",
+                "Works",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(1000)",
@@ -16,14 +16,14 @@ namespace TaskManager.Migrations
                 oldNullable: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "Url",
-                table: "Works",
+                "Url",
+                "Works",
                 maxLength: 250,
                 nullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Explanation",
-                table: "Projects",
+                "Explanation",
+                "Projects",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(1000)",
@@ -31,8 +31,8 @@ namespace TaskManager.Migrations
                 oldNullable: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "Url",
-                table: "Projects",
+                "Url",
+                "Projects",
                 maxLength: 250,
                 nullable: true);
         }
@@ -40,26 +40,26 @@ namespace TaskManager.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Url",
-                table: "Works");
+                "Url",
+                "Works");
 
             migrationBuilder.DropColumn(
-                name: "Url",
-                table: "Projects");
+                "Url",
+                "Projects");
 
             migrationBuilder.AlterColumn<string>(
-                name: "Explanation",
-                table: "Works",
-                type: "nvarchar(1000)",
+                "Explanation",
+                "Works",
+                "nvarchar(1000)",
                 maxLength: 1000,
                 nullable: true,
                 oldClrType: typeof(string),
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Explanation",
-                table: "Projects",
-                type: "nvarchar(1000)",
+                "Explanation",
+                "Projects",
+                "nvarchar(1000)",
                 maxLength: 1000,
                 nullable: true,
                 oldClrType: typeof(string),

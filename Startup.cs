@@ -1,15 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TaskManager.Controllers;
 using TaskManager.Models;
 using TaskManager.Services;
 
@@ -24,7 +19,9 @@ namespace TaskManager
         }
 
         public IConfiguration Configuration { get; }
+
         public IWebHostEnvironment Env { get; set; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -47,13 +44,10 @@ namespace TaskManager
             services.AddDbContext<MainContext>();
             services.AddControllersWithViews();
 
-            IMvcBuilder builder = services.AddRazorPages();
+            var builder = services.AddRazorPages();
 
 #if DEBUG
-            if (Env.IsDevelopment())
-            {
-                builder.AddRazorRuntimeCompilation();
-            }
+            if (Env.IsDevelopment()) builder.AddRazorRuntimeCompilation();
 #endif
         }
 
@@ -71,6 +65,7 @@ namespace TaskManager
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
@@ -82,31 +77,32 @@ namespace TaskManager
             app.UseAuthorization();
             app.UseCookiePolicy(new CookiePolicyOptions
             {
-                MinimumSameSitePolicy = SameSiteMode.Strict,
+                MinimumSameSitePolicy = SameSiteMode.Strict
             });
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                     "work",
-                     "work/{work}",
-                     new { controller = "Work", action = "Index" });
+                    "work",
+                    "work/{work}",
+                    new {controller = "Work", action = "Index"});
                 endpoints.MapControllerRoute(
-                     "project",
-                     "{project}/{key?}",
-                     new { controller = "Project", action = "Index" });
+                    "project",
+                    "{project}/{key?}",
+                    new {controller = "Project", action = "Index"});
 
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    "default",
+                    "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
+
     public static class ServiceCollectionExtensions
     {
         public static void AddFactory<TService, TImplementation>(this IServiceCollection services)
-        where TService : class
-        where TImplementation : class, TService
+            where TService : class
+            where TImplementation : class, TService
         {
             services.AddTransient<TService, TImplementation>();
             services.AddSingleton<Func<TService>>(x => () => x.GetService<TService>());

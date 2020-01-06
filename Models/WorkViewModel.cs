@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace TaskManager.Models
 {
-    public class WorkViewModel :Work
+    public class WorkViewModel : Work
     {
         public List<WorkDto> ChildWorkList { get; set; }
         public string EventName { get; set; }

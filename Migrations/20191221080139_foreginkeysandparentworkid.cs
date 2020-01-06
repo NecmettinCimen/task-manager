@@ -7,228 +7,228 @@ namespace TaskManager.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "ParentWorkId",
-                table: "Works",
+                "ParentWorkId",
+                "Works",
                 nullable: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Works_CreatorId",
-                table: "Works",
-                column: "CreatorId");
+                "IX_Works_CreatorId",
+                "Works",
+                "CreatorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Works_EventId",
-                table: "Works",
-                column: "EventId");
+                "IX_Works_EventId",
+                "Works",
+                "EventId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Works_ManagerId",
-                table: "Works",
-                column: "ManagerId");
+                "IX_Works_ManagerId",
+                "Works",
+                "ManagerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Works_ParentWorkId",
-                table: "Works",
-                column: "ParentWorkId");
+                "IX_Works_ParentWorkId",
+                "Works",
+                "ParentWorkId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Works_ProjectId",
-                table: "Works",
-                column: "ProjectId");
+                "IX_Works_ProjectId",
+                "Works",
+                "ProjectId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WorkLabels_CreatorId",
-                table: "WorkLabels",
-                column: "CreatorId");
+                "IX_WorkLabels_CreatorId",
+                "WorkLabels",
+                "CreatorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WorkLabels_LabelId",
-                table: "WorkLabels",
-                column: "LabelId");
+                "IX_WorkLabels_LabelId",
+                "WorkLabels",
+                "LabelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WorkLabels_WorkId",
-                table: "WorkLabels",
-                column: "WorkId");
+                "IX_WorkLabels_WorkId",
+                "WorkLabels",
+                "WorkId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WorkHistorys_CreatorId",
-                table: "WorkHistorys",
-                column: "CreatorId");
+                "IX_WorkHistorys_CreatorId",
+                "WorkHistorys",
+                "CreatorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WorkHistorys_ManagerId",
-                table: "WorkHistorys",
-                column: "ManagerId");
+                "IX_WorkHistorys_ManagerId",
+                "WorkHistorys",
+                "ManagerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WorkHistorys_WorkId",
-                table: "WorkHistorys",
-                column: "WorkId");
+                "IX_WorkHistorys_WorkId",
+                "WorkHistorys",
+                "WorkId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_CreatorId",
-                table: "Users",
-                column: "CreatorId");
+                "IX_Users_CreatorId",
+                "Users",
+                "CreatorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Projects_CreatorId",
-                table: "Projects",
-                column: "CreatorId");
+                "IX_Projects_CreatorId",
+                "Projects",
+                "CreatorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Projects_EventId",
-                table: "Projects",
-                column: "EventId");
+                "IX_Projects_EventId",
+                "Projects",
+                "EventId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Projects_ManagerId",
-                table: "Projects",
-                column: "ManagerId");
+                "IX_Projects_ManagerId",
+                "Projects",
+                "ManagerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Labels_CreatorId",
-                table: "Labels",
-                column: "CreatorId");
+                "IX_Labels_CreatorId",
+                "Labels",
+                "CreatorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Events_CreatorId",
-                table: "Events",
-                column: "CreatorId");
+                "IX_Events_CreatorId",
+                "Events",
+                "CreatorId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Events_Users_CreatorId",
-                table: "Events",
-                column: "CreatorId",
-                principalTable: "Users",
+                "FK_Events_Users_CreatorId",
+                "Events",
+                "CreatorId",
+                "Users",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Labels_Users_CreatorId",
-                table: "Labels",
-                column: "CreatorId",
-                principalTable: "Users",
+                "FK_Labels_Users_CreatorId",
+                "Labels",
+                "CreatorId",
+                "Users",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Projects_Users_CreatorId",
-                table: "Projects",
-                column: "CreatorId",
-                principalTable: "Users",
+                "FK_Projects_Users_CreatorId",
+                "Projects",
+                "CreatorId",
+                "Users",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Projects_Events_EventId",
-                table: "Projects",
-                column: "EventId",
-                principalTable: "Events",
+                "FK_Projects_Events_EventId",
+                "Projects",
+                "EventId",
+                "Events",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Projects_Users_ManagerId",
-                table: "Projects",
-                column: "ManagerId",
-                principalTable: "Users",
+                "FK_Projects_Users_ManagerId",
+                "Projects",
+                "ManagerId",
+                "Users",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Users_Users_CreatorId",
-                table: "Users",
-                column: "CreatorId",
-                principalTable: "Users",
+                "FK_Users_Users_CreatorId",
+                "Users",
+                "CreatorId",
+                "Users",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_WorkHistorys_Users_CreatorId",
-                table: "WorkHistorys",
-                column: "CreatorId",
-                principalTable: "Users",
+                "FK_WorkHistorys_Users_CreatorId",
+                "WorkHistorys",
+                "CreatorId",
+                "Users",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_WorkHistorys_Users_ManagerId",
-                table: "WorkHistorys",
-                column: "ManagerId",
-                principalTable: "Users",
+                "FK_WorkHistorys_Users_ManagerId",
+                "WorkHistorys",
+                "ManagerId",
+                "Users",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_WorkHistorys_Works_WorkId",
-                table: "WorkHistorys",
-                column: "WorkId",
-                principalTable: "Works",
+                "FK_WorkHistorys_Works_WorkId",
+                "WorkHistorys",
+                "WorkId",
+                "Works",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_WorkLabels_Users_CreatorId",
-                table: "WorkLabels",
-                column: "CreatorId",
-                principalTable: "Users",
+                "FK_WorkLabels_Users_CreatorId",
+                "WorkLabels",
+                "CreatorId",
+                "Users",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_WorkLabels_Labels_LabelId",
-                table: "WorkLabels",
-                column: "LabelId",
-                principalTable: "Labels",
+                "FK_WorkLabels_Labels_LabelId",
+                "WorkLabels",
+                "LabelId",
+                "Labels",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_WorkLabels_Works_WorkId",
-                table: "WorkLabels",
-                column: "WorkId",
-                principalTable: "Works",
+                "FK_WorkLabels_Works_WorkId",
+                "WorkLabels",
+                "WorkId",
+                "Works",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Works_Users_CreatorId",
-                table: "Works",
-                column: "CreatorId",
-                principalTable: "Users",
+                "FK_Works_Users_CreatorId",
+                "Works",
+                "CreatorId",
+                "Users",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Works_Events_EventId",
-                table: "Works",
-                column: "EventId",
-                principalTable: "Events",
+                "FK_Works_Events_EventId",
+                "Works",
+                "EventId",
+                "Events",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Works_Users_ManagerId",
-                table: "Works",
-                column: "ManagerId",
-                principalTable: "Users",
+                "FK_Works_Users_ManagerId",
+                "Works",
+                "ManagerId",
+                "Users",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Works_Works_ParentWorkId",
-                table: "Works",
-                column: "ParentWorkId",
-                principalTable: "Works",
+                "FK_Works_Works_ParentWorkId",
+                "Works",
+                "ParentWorkId",
+                "Works",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Works_Projects_ProjectId",
-                table: "Works",
-                column: "ProjectId",
-                principalTable: "Projects",
+                "FK_Works_Projects_ProjectId",
+                "Works",
+                "ProjectId",
+                "Projects",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }
@@ -236,144 +236,144 @@ namespace TaskManager.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Events_Users_CreatorId",
-                table: "Events");
+                "FK_Events_Users_CreatorId",
+                "Events");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Labels_Users_CreatorId",
-                table: "Labels");
+                "FK_Labels_Users_CreatorId",
+                "Labels");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Projects_Users_CreatorId",
-                table: "Projects");
+                "FK_Projects_Users_CreatorId",
+                "Projects");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Projects_Events_EventId",
-                table: "Projects");
+                "FK_Projects_Events_EventId",
+                "Projects");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Projects_Users_ManagerId",
-                table: "Projects");
+                "FK_Projects_Users_ManagerId",
+                "Projects");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Users_Users_CreatorId",
-                table: "Users");
+                "FK_Users_Users_CreatorId",
+                "Users");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_WorkHistorys_Users_CreatorId",
-                table: "WorkHistorys");
+                "FK_WorkHistorys_Users_CreatorId",
+                "WorkHistorys");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_WorkHistorys_Users_ManagerId",
-                table: "WorkHistorys");
+                "FK_WorkHistorys_Users_ManagerId",
+                "WorkHistorys");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_WorkHistorys_Works_WorkId",
-                table: "WorkHistorys");
+                "FK_WorkHistorys_Works_WorkId",
+                "WorkHistorys");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_WorkLabels_Users_CreatorId",
-                table: "WorkLabels");
+                "FK_WorkLabels_Users_CreatorId",
+                "WorkLabels");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_WorkLabels_Labels_LabelId",
-                table: "WorkLabels");
+                "FK_WorkLabels_Labels_LabelId",
+                "WorkLabels");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_WorkLabels_Works_WorkId",
-                table: "WorkLabels");
+                "FK_WorkLabels_Works_WorkId",
+                "WorkLabels");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Works_Users_CreatorId",
-                table: "Works");
+                "FK_Works_Users_CreatorId",
+                "Works");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Works_Events_EventId",
-                table: "Works");
+                "FK_Works_Events_EventId",
+                "Works");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Works_Users_ManagerId",
-                table: "Works");
+                "FK_Works_Users_ManagerId",
+                "Works");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Works_Works_ParentWorkId",
-                table: "Works");
+                "FK_Works_Works_ParentWorkId",
+                "Works");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Works_Projects_ProjectId",
-                table: "Works");
+                "FK_Works_Projects_ProjectId",
+                "Works");
 
             migrationBuilder.DropIndex(
-                name: "IX_Works_CreatorId",
-                table: "Works");
+                "IX_Works_CreatorId",
+                "Works");
 
             migrationBuilder.DropIndex(
-                name: "IX_Works_EventId",
-                table: "Works");
+                "IX_Works_EventId",
+                "Works");
 
             migrationBuilder.DropIndex(
-                name: "IX_Works_ManagerId",
-                table: "Works");
+                "IX_Works_ManagerId",
+                "Works");
 
             migrationBuilder.DropIndex(
-                name: "IX_Works_ParentWorkId",
-                table: "Works");
+                "IX_Works_ParentWorkId",
+                "Works");
 
             migrationBuilder.DropIndex(
-                name: "IX_Works_ProjectId",
-                table: "Works");
+                "IX_Works_ProjectId",
+                "Works");
 
             migrationBuilder.DropIndex(
-                name: "IX_WorkLabels_CreatorId",
-                table: "WorkLabels");
+                "IX_WorkLabels_CreatorId",
+                "WorkLabels");
 
             migrationBuilder.DropIndex(
-                name: "IX_WorkLabels_LabelId",
-                table: "WorkLabels");
+                "IX_WorkLabels_LabelId",
+                "WorkLabels");
 
             migrationBuilder.DropIndex(
-                name: "IX_WorkLabels_WorkId",
-                table: "WorkLabels");
+                "IX_WorkLabels_WorkId",
+                "WorkLabels");
 
             migrationBuilder.DropIndex(
-                name: "IX_WorkHistorys_CreatorId",
-                table: "WorkHistorys");
+                "IX_WorkHistorys_CreatorId",
+                "WorkHistorys");
 
             migrationBuilder.DropIndex(
-                name: "IX_WorkHistorys_ManagerId",
-                table: "WorkHistorys");
+                "IX_WorkHistorys_ManagerId",
+                "WorkHistorys");
 
             migrationBuilder.DropIndex(
-                name: "IX_WorkHistorys_WorkId",
-                table: "WorkHistorys");
+                "IX_WorkHistorys_WorkId",
+                "WorkHistorys");
 
             migrationBuilder.DropIndex(
-                name: "IX_Users_CreatorId",
-                table: "Users");
+                "IX_Users_CreatorId",
+                "Users");
 
             migrationBuilder.DropIndex(
-                name: "IX_Projects_CreatorId",
-                table: "Projects");
+                "IX_Projects_CreatorId",
+                "Projects");
 
             migrationBuilder.DropIndex(
-                name: "IX_Projects_EventId",
-                table: "Projects");
+                "IX_Projects_EventId",
+                "Projects");
 
             migrationBuilder.DropIndex(
-                name: "IX_Projects_ManagerId",
-                table: "Projects");
+                "IX_Projects_ManagerId",
+                "Projects");
 
             migrationBuilder.DropIndex(
-                name: "IX_Labels_CreatorId",
-                table: "Labels");
+                "IX_Labels_CreatorId",
+                "Labels");
 
             migrationBuilder.DropIndex(
-                name: "IX_Events_CreatorId",
-                table: "Events");
+                "IX_Events_CreatorId",
+                "Events");
 
             migrationBuilder.DropColumn(
-                name: "ParentWorkId",
-                table: "Works");
+                "ParentWorkId",
+                "Works");
         }
     }
 }

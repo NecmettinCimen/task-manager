@@ -1,22 +1,24 @@
 ﻿@model ApiResultModel<ProjectViewModel>
-@using Microsoft.AspNetCore.Http;
 @{
     ViewData["Title"] = Model.Data.Project.Title;
-    int? user = Context.Session.GetInt32("userid");
+    var user = Context.Session.GetInt32("userid");
 }
 
 @if (user.HasValue && user.Value == Model.Data.Project.ManagerId)
 {
-
     <form action="/project/update" id="projectUpdateForm" autocomplete="false">
-        <input hidden name="id" value="@Model.Data.Project.Id" />
-        <input hidden name="title" id="projecttitle" />
-        <input hidden name="explanation" />
+        <input hidden name="id" value="@Model.Data.Project.Id"/>
+        <input hidden name="title" id="projecttitle"/>
+        <input hidden name="explanation"/>
         <div class="row" style="justify-content:space-between">
             <div class="col-8 pl-4">
                 <div class="row">
-                    <div class="col-12 p-0"><h2 onkeyup="editButtonShow()" class="bd-content-title float-left" id="title" contenteditable="true">@Model.Data.Project.Title</h2></div>
-                    <div class="col-12 p-0"><div id="editor1" onkeyup="editButtonShow()" contenteditable="true">@(String.IsNullOrEmpty(Model.Data.Project.Explanation) ? Html.Raw("Açıklama Ekle") : Html.Raw(Model.Data.Project.Explanation))</div></div>
+                    <div class="col-12 p-0">
+                        <h2 onkeyup="editButtonShow()" class="bd-content-title float-left" id="title" contenteditable="true">@Model.Data.Project.Title</h2>
+                    </div>
+                    <div class="col-12 p-0">
+                        <div id="editor1" onkeyup="editButtonShow()" contenteditable="true">@(string.IsNullOrEmpty(Model.Data.Project.Explanation) ? Html.Raw("Açıklama Ekle") : Html.Raw(Model.Data.Project.Explanation))</div>
+                    </div>
                 </div>
             </div>
             <div class="col-4">
@@ -42,10 +44,10 @@
         </div>
     </form>
 
-    @section Scripts{
-        <script src="https://cdn.ckeditor.com/4.13.1/standard-all/ckeditor.js"></script>
+@section Scripts{
+    <script src="https://cdn.ckeditor.com/4.13.1/standard-all/ckeditor.js"></script>
 
-        <script>
+    <script>
             CKEDITOR.disableAutoInline = true;
             CKEDITOR.inline('editor1', {
                 extraPlugins: 'sourcedialog'
@@ -68,61 +70,67 @@
                     .then(res => location.reload())
             }
         </script>
-    }
-
-}
+}}
 else
 {
     <div>
         <h2 class="bd-content-title" id="title">@Model.Data.Project.Title</h2>
-        <div>@(String.IsNullOrEmpty(Model.Data.Project.Explanation) ? Html.Raw("Açıklama Yok") : Html.Raw(Model.Data.Project.Explanation))</div>
+        <div>@(string.IsNullOrEmpty(Model.Data.Project.Explanation) ? Html.Raw("Açıklama Yok") : Html.Raw(Model.Data.Project.Explanation))</div>
     </div>
 }
 @if (!Model.Success)
 {
-    <div class="alert alert-danger">Hata! <br /><small class="form-text text-muted">@Model.Error</small></div>
+    <div class="alert alert-danger">Hata! <br/><small class="form-text text-muted">@Model.Error</small></div>
 }
-<hr />
-<div class="row"><div class="col-md-12"><h5 class="bd-content-title float-left">Görevler</h5></div></div>
+<hr/>
+<div class="row">
+    <div class="col-md-12">
+        <h5 class="bd-content-title float-left">Görevler</h5>
+    </div>
+</div>
 
 @if (user.HasValue)
 {
     <div class="row mt-2 mb-2">
         <div class="col-12">
             <form action="/work/save" class="row" autocomplete="false">
-                <input hidden name="projectId" value="@Model.Data.Project.Id" />
-                <div class="col-10"><input required name="title" class="form-control" placeholder="Görev Başlık" /></div>
-                <div class="col-2"><button type="submit" class="btn btn-outline-primary float-right">Kaydet</button></div>
+                <input hidden name="projectId" value="@Model.Data.Project.Id"/>
+                <div class="col-10">
+                    <input required name="title" class="form-control" placeholder="Görev Başlık"/>
+                </div>
+                <div class="col-2">
+                    <button type="submit" class="btn btn-outline-primary float-right">Kaydet</button>
+                </div>
             </form>
         </div>
     </div>
 }
-    <ul class="list-group">
-        @foreach (var item in Model.Data.WorkList)
-        {
-            <li class="list-group-item mt-2">
-                <div class="row" style="justify-content:space-between">
-                    <h5 style="cursor:pointer" onclick="window.location='/work/@item.Url'">#@item.Id @item.Title</h5>
-                    <div style="cursor:pointer">
-                        <div class="dropdown">
-                            <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                @item.EventName
-                            </a>
-                            <div class="dropdown-menu">
-                                @foreach (var e in Model.Data.EventList.Where(x => x.Name != item.EventName))
-                                {
-                                    <form action="/work/updatestatus" autocomplete="false">
-                                        <input hidden name="id" value="@item.Id" />
-                                        <input hidden name="eventId" value="@e.Id" />
-                                        <input hidden name="managerId" value="@item.ManagerId" />
-                                        <input hidden name="projectId" value="@item.ProjectId" />
-                                        <button type="submit" class="btn btn-link">@e.Name</button>
-                                    </form>
-                                }
-                            </div>
+<ul class="list-group">
+    @foreach (var item in Model.Data.WorkList)
+    {
+        <li class="list-group-item mt-2">
+            <div class="row" style="justify-content:space-between">
+                <h5 style="cursor:pointer" onclick="window.location='/work/@item.Url'">#@item.Id @item.Title</h5>
+                <div style="cursor:pointer">
+                    <div class="dropdown">
+                        <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @item.EventName
+                        </a>
+                        <div class="dropdown-menu">
+                            @foreach (var e in Model.Data.EventList.Where(x => x.Name != item.EventName))
+                            {
+                                <form action="/work/updatestatus" autocomplete="false">
+                                    <input hidden name="id" value="@item.Id"/>
+                                    <input hidden name="eventId" value="@e.Id"/>
+                                    <input hidden name="managerId" value="@item.ManagerId"/>
+                                    <input hidden name="projectId" value="@item.ProjectId"/>
+                                    <button type="submit" class="btn btn-link">@e.Name</button>
+                                </form>
+                            }
                         </div>
                     </div>
                 </div>
-            </li>
-        }
-    </ul>
+            </div>
+        </li>
+    }
+</ul>

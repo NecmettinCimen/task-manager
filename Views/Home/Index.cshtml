@@ -2,18 +2,29 @@
 @{
     ViewData["Title"] = "Projeler";
 }
-<div class="row"><div class="col-md-6"><h2 class="bd-content-title float-left">Projeler</h2></div><div class="col-md-6"><h2 class="bd-content-title float-left">Görevler</h2></div></div>
+<div class="row">
+    <div class="col-md-6">
+        <h2 class="bd-content-title float-left">Projeler</h2>
+    </div>
+    <div class="col-md-6">
+        <h2 class="bd-content-title float-left">Görevler</h2>
+    </div>
+</div>
 @if (!Model.Success)
 {
-    <div class="alert alert-danger">Hata! <br /><small class="form-text text-muted">@Model.Error</small></div>
+    <div class="alert alert-danger">Hata! <br/><small class="form-text text-muted">@Model.Error</small></div>
 }
 @if (Context.Session.GetInt32("userid").HasValue)
 {
     <div class="row mt-2 mb-2">
         <div class="col-6">
             <form action="/project/save" class="row" autocomplete="false">
-                <div class="col-10"><input required name="title" class="form-control" placeholder="Proje Başlık" /></div>
-                <div class="col-2"><button type="submit" class="btn btn-outline-primary float-right">Kaydet</button></div>
+                <div class="col-10">
+                    <input required name="title" class="form-control" placeholder="Proje Başlık"/>
+                </div>
+                <div class="col-2">
+                    <button type="submit" class="btn btn-outline-primary float-right">Kaydet</button>
+                </div>
             </form>
         </div>
     </div>
@@ -51,6 +62,7 @@
         </ul>
     </div>
 </div>
+
 @section Scripts{
     <script>
         $(function () {
