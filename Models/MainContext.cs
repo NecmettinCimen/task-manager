@@ -18,8 +18,8 @@ namespace TaskManager.Models
             modelBuilder.Entity<User>().HasData(new User
             { Id = 1, NameSurname = "Admin", Email = "admin", Password = "1", Public=true });
             modelBuilder.Entity<Event>().HasData(new Event { Id = 1, Name = "Bekliyor", Public = true });
-            modelBuilder.Entity<Event>().HasData(new Event { Id = 2, Name = "��lemde", Public = true });
-            modelBuilder.Entity<Event>().HasData(new Event { Id = 3, Name = "Tamamland�", Public = true });
+            modelBuilder.Entity<Event>().HasData(new Event { Id = 2, Name = "İşlemde", Public = true });
+            modelBuilder.Entity<Event>().HasData(new Event { Id = 3, Name = "Tamamlandı", Public = true });
             modelBuilder.Entity<Event>().HasData(new Event { Id = 4, Name = "Red Edildi", Public = true });
             modelBuilder.Entity<Label>().HasData(new Label { Id = 1, Name = "Web", Public = true });
         }
@@ -76,6 +76,7 @@ namespace TaskManager.Models
         public Event Event { get; set; }
         public int EventId { get; set; } = 1;
     }
+
     public class Work : BaseEntity
     {
         [Required]

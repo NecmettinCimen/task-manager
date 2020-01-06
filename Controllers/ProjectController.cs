@@ -76,8 +76,6 @@ namespace TaskManager.Controllers
 
         public async Task<IActionResult> Save(Project model)
         {
-            try
-            {
                 int? user = HttpContext.Session.GetInt32("userid");
                 model.ManagerId = user ?? 1;
                 model.Url = FriendlyURL.GetURLFromTitle(model.Title);
@@ -85,18 +83,10 @@ namespace TaskManager.Controllers
                 await _baseService.Save(model);
 
                 return Redirect($"/{model.Url}");
-            }
-            catch (System.Exception ex)
-            {
-                ApiResultModel<List<Project>> result = new ApiResultModel<List<Project>>(null, ex.Message);
-                return View("~/Views/Home/Index.cshtml", result);
-            }
         }
 
         public async Task<IActionResult> Update(Project model)
         {
-            try
-            {
                 Project item = await _baseService.Get<Project>(model.Id);
                 item.Title = model.Title;
                 item.Explanation = model.Explanation;
@@ -104,13 +94,7 @@ namespace TaskManager.Controllers
                 await _baseService.Save(item);
 
                 return Redirect($"/{item.Url}");
-            }
-            catch (System.Exception ex)
-            {
-
-                ApiResultModel<List<Project>> result = new ApiResultModel<List<Project>>(null, ex.Message);
-                return View("~/Views/Home/Index.cshtml", result);
-            }
+           
         }
         public async Task<IActionResult> Share(Project model)
         {
@@ -146,7 +130,7 @@ namespace TaskManager.Controllers
                 await _baseService.Save(project);
             }
 
-            return Json(true);
+            return Json(data: true);
 
         }
 
