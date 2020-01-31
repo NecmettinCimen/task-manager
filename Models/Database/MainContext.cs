@@ -28,8 +28,15 @@ namespace TaskManager.Models
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.EnableSensitiveDataLogging(false);
+                #if DEBUG
+                optionsBuilder.UseSqlServer(
+                    "Data Source=necmettincimen.com,51433;Initial Catalog=dbtaskmanager;User ID=sa;Password=Nebula21");
+                #endif
+#if !DEBUG
                 optionsBuilder.UseSqlServer(
                     "Data Source=localhost\\sekiz;Initial Catalog=dbtaskmanager;User ID=sa;Password=Nebula21");
+#endif
+
             }
         }
     }

@@ -124,8 +124,12 @@ namespace TaskManager.Controllers
         public async Task<IActionResult> Share(Project model)
         {
             var item = await _baseService.Get<Project>(model.Id);
-            await _baseService.Save(item);
-            return Redirect($"/{item.Url}");
+            if (string.IsNullOrEmpty((item.ShareKey)))
+            {
+                item.ShareKey = RandomString.Generate(10);
+                await _baseService.Save(item);
+            }
+            return Redirect($"/{item.Url}?sharekey={item.ShareKey}");
         }
 
         public async Task<IActionResult> Remove(int id)

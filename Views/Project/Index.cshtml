@@ -110,7 +110,7 @@ else
     {
         <li class="list-group-item mt-2">
             <div class="row" style="justify-content:space-between">
-                <h5 style="cursor:pointer" onclick="window.location='/work/@item.Url'">#@item.Id @item.Title</h5>
+                <h5 style="cursor:pointer" class="isUrlTitle" onclick="window.location='/work/@item.Url'">#@item.Id @item.Title</h5>
                 <div style="cursor:pointer">
                     <div class="dropdown">
                         <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -119,11 +119,9 @@ else
                         <div class="dropdown-menu">
                             @foreach (var e in Model.Data.EventList.Where(x => x.Name != item.EventName))
                             {
-                                <form action="/work/updatestatus" autocomplete="false">
+                                <form method="post" action="/work/updatestatus" autocomplete="false">
                                     <input hidden name="id" value="@item.Id"/>
                                     <input hidden name="eventId" value="@e.Id"/>
-                                    <input hidden name="managerId" value="@item.ManagerId"/>
-                                    <input hidden name="projectId" value="@item.ProjectId"/>
                                     <button type="submit" class="btn btn-link">@e.Name</button>
                                 </form>
                             }
@@ -134,3 +132,29 @@ else
         </li>
     }
 </ul>
+
+<script>
+function validURL(str) {
+    console.log(str)
+  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+  return !!pattern.test(str);
+}
+function isUrlTitle() {
+  let urlTitles=$('.isUrlTitle');
+  for (let i=0; i<urlTitles.length;i++){
+      let element = urlTitles[i];
+      let url =  $(element).text().split(' ').splice(1).join('');
+      if(validURL(url)){
+          $(element).attr('onclick','window.location="'+url+'"')
+      }
+  }
+}
+window.onload=function(e){
+    isUrlTitle()
+}
+</script>

@@ -9,6 +9,7 @@ namespace TaskManager.Models
         [MaxLength(250)] public string Url { get; set; }
 
         [MaxLength] public string Explanation { get; set; }
+        [MaxLength(10)] public string ShareKey { get; set; }
 
         public User Manager { get; set; }
         public int ManagerId { get; set; } = 1;

@@ -44,13 +44,12 @@ namespace TaskManager.Controllers
             if (model.ParentWorkId.HasValue)
             {
                 var work = await _baseService.Get<Work>(model.ParentWorkId.Value);
-                await TelegramBot.SendAsync(
-                    $"Yeni bir alt iş oluşturuldu  {model.Id} {model.Title}  Üst İş : {work.Title}");
+                //await TelegramBot.SendAsync($"Yeni bir alt iş oluşturuldu  {model.Id} {model.Title}  Üst İş : {work.Title}");
                 return Redirect($"/work/{work.Url}");
             }
 
             var project = await _baseService.Get<Project>(model.ProjectId);
-            await TelegramBot.SendAsync($"Yeni bir iş oluşturuldu {model.Id} {model.Title}  Proje : {project.Title}");
+            //await TelegramBot.SendAsync($"Yeni bir iş oluşturuldu {model.Id} {model.Title}  Proje : {project.Title}");
             return Redirect($"/{project.Url}");
         }
 
@@ -118,7 +117,7 @@ namespace TaskManager.Controllers
             item.Url = FriendlyURL.GetURLFromTitle(model.Title);
             item.Explanation = model.Explanation;
             await _baseService.Save(item);
-            await TelegramBot.SendAsync($"Bir iş güncellendi  {model.Id} {item.Title}");
+            //await TelegramBot.SendAsync($"Bir iş güncellendi  {model.Id} {item.Title}");
 
             return Redirect($"/work/{item.Url}");
         }
@@ -133,12 +132,15 @@ namespace TaskManager.Controllers
             await _baseService.Save(new WorkHistory
                 {PrevStatus = model.Status, WorkId = model.Id, ManagerId = model.ManagerId});
 
-            var dbevent = await _baseService.GetList<Event>().FirstAsync(f => f.Id == item.EventId);
-            await TelegramBot.SendAsync($"Bir işin durumu güncellendi  {model.Id} {item.Title}  {dbevent.Name}");
+            //var dbevent = await _baseService.GetList<Event>().FirstAsync(f => f.Id == item.EventId);
+            //await TelegramBot.SendAsync($"Bir işin durumu güncellendi  {model.Id} {item.Title}  {dbevent.Name}");
 
-            if (model.ParentWorkId.HasValue) return Redirect($"/work/{model.Url}");
-
-            var project = await _baseService.Get<Project>(model.ProjectId);
+            if (item.ParentWorkId.HasValue)
+            {
+                var work = await _baseService.Get<Work>(item.ParentWorkId.Value);
+                return Redirect($"/work/{work.Url}");
+            }
+            var project = await _baseService.Get<Project>(item.ProjectId);
             return Redirect($"/{project.Url}");
         }
 
