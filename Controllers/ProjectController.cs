@@ -44,6 +44,18 @@ namespace TaskManager.Controllers
             return Redirect($"/{model.Url}");
         }
 
+        public async Task<IActionResult> UpdateDisplayOrder(string id)
+        {
+            int[] ids = id.Split(",").Select(s=>int.Parse(s)).ToArray();
+            var projects = await _baseService.GetList<Project>().ToListAsync();
+            for (int i = 0; i < ids.Length; i++)
+            {
+                var temp = projects.Find(f => f.Id == ids[i]);
+                temp.DisplayOrder = i + 1;
+                await _baseService.Save(temp);
+            }
+            return Json(true);
+        }
         public Task<IActionResult> Get(int id)
         {
             throw new NotImplementedException();
@@ -138,6 +150,11 @@ namespace TaskManager.Controllers
             return Redirect("/");
         }
 
+        public async Task<IActionResult> Archive(int id)
+        {
+            await _baseService.Archive<Project>(id);
+            return Redirect("/");
+        }
         public async Task<IActionResult> UpdatePublic(int id)
         {
             var project = await _baseService.Get<Project>(id);

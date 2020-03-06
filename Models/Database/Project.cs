@@ -15,5 +15,6 @@ namespace TaskManager.Models
         public int ManagerId { get; set; } = 1;
         public Event Event { get; set; }
         public int EventId { get; set; } = 1;
+        [Required] public int DisplayOrder { get; set; } = 0;
     }
 }

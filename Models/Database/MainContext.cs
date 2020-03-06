@@ -30,11 +30,11 @@ namespace TaskManager.Models
                 optionsBuilder.EnableSensitiveDataLogging(false);
                 #if DEBUG
                 optionsBuilder.UseSqlServer(
-                    "Data Source=necmettincimen.com,51433;Initial Catalog=dbtaskmanager;User ID=sa;Password=Nebula21");
+                    "Data Source=23.97.247.65,51433;Initial Catalog=dbtaskmanager;User ID=sa;Password=A{J8c]fu^j\\FuZ&>");
                 #endif
 #if !DEBUG
                 optionsBuilder.UseSqlServer(
-                    "Data Source=localhost\\sekiz;Initial Catalog=dbtaskmanager;User ID=sa;Password=Nebula21");
+                    "Data Source=localhost\\sekiz;Initial Catalog=dbtaskmanager;User ID=sa;Password=A{J8c]fu^j\\FuZ&>");
 #endif
 
             }

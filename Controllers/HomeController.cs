@@ -31,42 +31,45 @@ namespace TaskManager.Controllers
                 HttpContext.Session.SetString("username", Request.Cookies["username"]);
             }
 
-            var projectList = await _baseService.GetList<Project>().Select(s => new ProjectListDto
-            {
-                Id = s.Id,
-                Url = s.Url,
-                Title = s.Title,
-                WorkProgres = _baseService.GetList<Work>().Count(w => w.ProjectId == s.Id) > 0
+            var projectList = await _baseService.GetList<Project>()
+                .OrderBy(o => o.DisplayOrder)
+                .Select(s => new ProjectListDto
+                {
+                    Id = s.Id,
+                    Url = s.Url,
+                    Title = s.Title,
+                    WorkProgres = _baseService.GetList<Work>().Count(w => w.ProjectId == s.Id) > 0
                     ? Convert.ToInt32(
                         Convert.ToDouble(_baseService.GetList<Work>()
                             .Count(w => w.ProjectId == s.Id && w.EventId != 1)) /
                         Convert.ToDouble(_baseService.GetList<Work>().Count(w => w.ProjectId == s.Id)) * 100)
-                    : 0
-            }).ToListAsync();
+                    : 0,
+                    
+                }).ToListAsync();
 
             var workList = await (from w in _baseService.GetList<Work>()
-                where !w.ParentWorkId.HasValue
-                join s in _baseService.GetList<Project>() on w.ProjectId equals s.Id
-                join e in _baseService.GetList<Event>() on w.EventId equals e.Id
-                where e.Id == 1
-                orderby w.Id
-                orderby s.Id
-                select new WorkListDto
-                {
-                    Id = w.Id,
-                    Title = w.Title,
-                    Url = w.Url,
-                    Project = s.Title,
-                    Event = e.Name,
-                    WorkProgres = _baseService.GetList<Work>().Count(w => w.ParentWorkId == w.Id) > 0
-                        ? Convert.ToInt32(Convert.ToDouble(_baseService.GetList<Work>()
-                                              .Count(w => w.ParentWorkId == w.Id && w.EventId != 1)) /
-                                          Convert.ToDouble(_baseService.GetList<Work>()
-                                              .Count(w => w.ParentWorkId == w.Id)) * 100)
-                        : 0
-                }).ToListAsync();
+                                  where !w.ParentWorkId.HasValue
+                                  join s in _baseService.GetList<Project>() on w.ProjectId equals s.Id
+                                  join e in _baseService.GetList<Event>() on w.EventId equals e.Id
+                                  where e.Id == 1
+                                  orderby w.Id
+                                  orderby s.DisplayOrder
+                                  select new WorkListDto
+                                  {
+                                      Id = w.Id,
+                                      Title = w.Title,
+                                      Url = w.Url,
+                                      Project = s.Title,
+                                      Event = e.Name,
+                                      WorkProgres = _baseService.GetList<Work>().Count(w => w.ParentWorkId == w.Id) > 0
+                                          ? Convert.ToInt32(Convert.ToDouble(_baseService.GetList<Work>()
+                                                                .Count(w => w.ParentWorkId == w.Id && w.EventId != 1)) /
+                                                            Convert.ToDouble(_baseService.GetList<Work>()
+                                                                .Count(w => w.ParentWorkId == w.Id)) * 100)
+                                          : 0
+                                  }).ToListAsync();
             return View(new ApiResultModel<HomeIndexViewModel>(new HomeIndexViewModel
-                {ProjectList = projectList, WorkList = workList}));
+            { ProjectList = projectList, WorkList = workList }));
         }
     }
 }
