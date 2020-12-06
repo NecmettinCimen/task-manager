@@ -28,14 +28,9 @@ namespace TaskManager.Models
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.EnableSensitiveDataLogging(false);
-                #if DEBUG
-                optionsBuilder.UseSqlServer(
-                    "Data Source=23.97.247.65,51433;Initial Catalog=dbtaskmanager;User ID=sa;Password=A{J8c]fu^j\\FuZ&>");
-                #endif
-#if !DEBUG
-                optionsBuilder.UseSqlServer(
-                    "Data Source=localhost\\sekiz;Initial Catalog=dbtaskmanager;User ID=sa;Password=A{J8c]fu^j\\FuZ&>");
-#endif
+                
+                optionsBuilder.UseSqlite("Data Source=MainContext.db");
+                
 
             }
         }

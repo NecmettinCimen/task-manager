@@ -2,6 +2,7 @@ using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -85,16 +86,20 @@ namespace TaskManager
                 endpoints.MapControllerRoute(
                     "work",
                     "work/{work}",
-                    new {controller = "Work", action = "Index"});
+                    new { controller = "Work", action = "Index" });
                 endpoints.MapControllerRoute(
                     "project",
                     "{project}/{key?}",
-                    new {controller = "Project", action = "Index"});
+                    new { controller = "Project", action = "Index" });
 
                 endpoints.MapControllerRoute(
                     "default",
                     "{controller=Home}/{action=Index}/{id?}");
             });
+            using (var context = new MainContext())
+            {
+                context.Database.Migrate();
+            }
         }
     }
 
