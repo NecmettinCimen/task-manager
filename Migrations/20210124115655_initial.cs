@@ -1,9 +1,10 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace TaskManager.Migrations
 {
-    public partial class init : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,15 +12,15 @@ namespace TaskManager.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Status = table.Column<short>(nullable: false),
-                    Public = table.Column<bool>(nullable: false),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    CreatorId = table.Column<int>(nullable: false),
-                    NameSurname = table.Column<string>(maxLength: 100, nullable: false),
-                    Email = table.Column<string>(maxLength: 150, nullable: false),
-                    Password = table.Column<string>(maxLength: 150, nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    NameSurname = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
+                    Password = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
+                    Status = table.Column<short>(type: "smallint", nullable: false),
+                    Public = table.Column<bool>(type: "boolean", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -36,13 +37,13 @@ namespace TaskManager.Migrations
                 name: "Events",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Status = table.Column<short>(nullable: false),
-                    Public = table.Column<bool>(nullable: false),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    CreatorId = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(maxLength: 250, nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
+                    Status = table.Column<short>(type: "smallint", nullable: false),
+                    Public = table.Column<bool>(type: "boolean", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -59,13 +60,13 @@ namespace TaskManager.Migrations
                 name: "Labels",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Status = table.Column<short>(nullable: false),
-                    Public = table.Column<bool>(nullable: false),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    CreatorId = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(maxLength: 250, nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
+                    Status = table.Column<short>(type: "smallint", nullable: false),
+                    Public = table.Column<bool>(type: "boolean", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -82,33 +83,33 @@ namespace TaskManager.Migrations
                 name: "Projects",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Status = table.Column<short>(nullable: false),
-                    Public = table.Column<bool>(nullable: false),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    CreatorId = table.Column<int>(nullable: false),
-                    Title = table.Column<string>(maxLength: 250, nullable: false),
-                    Url = table.Column<string>(maxLength: 250, nullable: true),
-                    Explanation = table.Column<string>(nullable: true),
-                    ShareKey = table.Column<string>(maxLength: 10, nullable: true),
-                    ManagerId = table.Column<int>(nullable: false),
-                    EventId = table.Column<int>(nullable: false),
-                    DisplayOrder = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Title = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
+                    Url = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true),
+                    Explanation = table.Column<string>(type: "text", nullable: true),
+                    ShareKey = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: true),
+                    ManagerId = table.Column<int>(type: "integer", nullable: false),
+                    EventId = table.Column<int>(type: "integer", nullable: false),
+                    DisplayOrder = table.Column<int>(type: "integer", nullable: false),
+                    Status = table.Column<short>(type: "smallint", nullable: false),
+                    Public = table.Column<bool>(type: "boolean", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Projects", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Projects_Users_CreatorId",
-                        column: x => x.CreatorId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Projects_Events_EventId",
                         column: x => x.EventId,
                         principalTable: "Events",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Projects_Users_CreatorId",
+                        column: x => x.CreatorId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -123,33 +124,39 @@ namespace TaskManager.Migrations
                 name: "Works",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Status = table.Column<short>(nullable: false),
-                    Public = table.Column<bool>(nullable: false),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    CreatorId = table.Column<int>(nullable: false),
-                    Title = table.Column<string>(maxLength: 250, nullable: false),
-                    Url = table.Column<string>(maxLength: 250, nullable: true),
-                    Explanation = table.Column<string>(nullable: true),
-                    ProjectId = table.Column<int>(nullable: false),
-                    ManagerId = table.Column<int>(nullable: false),
-                    EventId = table.Column<int>(nullable: false),
-                    ParentWorkId = table.Column<int>(nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Title = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
+                    Url = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true),
+                    Explanation = table.Column<string>(type: "text", nullable: true),
+                    ProjectId = table.Column<int>(type: "integer", nullable: false),
+                    ManagerId = table.Column<int>(type: "integer", nullable: false),
+                    EventId = table.Column<int>(type: "integer", nullable: false),
+                    ParentWorkId = table.Column<int>(type: "integer", nullable: true),
+                    Status = table.Column<short>(type: "smallint", nullable: false),
+                    Public = table.Column<bool>(type: "boolean", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Works", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Works_Users_CreatorId",
-                        column: x => x.CreatorId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Works_Events_EventId",
                         column: x => x.EventId,
                         principalTable: "Events",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Works_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Works_Users_CreatorId",
+                        column: x => x.CreatorId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -164,27 +171,21 @@ namespace TaskManager.Migrations
                         principalTable: "Works",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Works_Projects_ProjectId",
-                        column: x => x.ProjectId,
-                        principalTable: "Projects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "WorkHistorys",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Status = table.Column<short>(nullable: false),
-                    Public = table.Column<bool>(nullable: false),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    CreatorId = table.Column<int>(nullable: false),
-                    PrevStatus = table.Column<short>(nullable: false),
-                    WorkId = table.Column<int>(nullable: false),
-                    ManagerId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    PrevStatus = table.Column<short>(type: "smallint", nullable: false),
+                    WorkId = table.Column<int>(type: "integer", nullable: false),
+                    ManagerId = table.Column<int>(type: "integer", nullable: false),
+                    Status = table.Column<short>(type: "smallint", nullable: false),
+                    Public = table.Column<bool>(type: "boolean", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -213,28 +214,28 @@ namespace TaskManager.Migrations
                 name: "WorkLabels",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Status = table.Column<short>(nullable: false),
-                    Public = table.Column<bool>(nullable: false),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    CreatorId = table.Column<int>(nullable: false),
-                    WorkId = table.Column<int>(nullable: false),
-                    LabelId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    WorkId = table.Column<int>(type: "integer", nullable: false),
+                    LabelId = table.Column<int>(type: "integer", nullable: false),
+                    Status = table.Column<short>(type: "smallint", nullable: false),
+                    Public = table.Column<bool>(type: "boolean", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_WorkLabels", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WorkLabels_Users_CreatorId",
-                        column: x => x.CreatorId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_WorkLabels_Labels_LabelId",
                         column: x => x.LabelId,
                         principalTable: "Labels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_WorkLabels_Users_CreatorId",
+                        column: x => x.CreatorId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -253,22 +254,13 @@ namespace TaskManager.Migrations
             migrationBuilder.InsertData(
                 table: "Events",
                 columns: new[] { "Id", "CreateDate", "CreatorId", "Name", "Public", "Status" },
-                values: new object[] { 1, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "Bekliyor", true, (short)1 });
-
-            migrationBuilder.InsertData(
-                table: "Events",
-                columns: new[] { "Id", "CreateDate", "CreatorId", "Name", "Public", "Status" },
-                values: new object[] { 2, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "İşlemde", true, (short)1 });
-
-            migrationBuilder.InsertData(
-                table: "Events",
-                columns: new[] { "Id", "CreateDate", "CreatorId", "Name", "Public", "Status" },
-                values: new object[] { 3, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "Tamamlandı", true, (short)1 });
-
-            migrationBuilder.InsertData(
-                table: "Events",
-                columns: new[] { "Id", "CreateDate", "CreatorId", "Name", "Public", "Status" },
-                values: new object[] { 4, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "Red Edildi", true, (short)1 });
+                values: new object[,]
+                {
+                    { 1, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "Bekliyor", true, (short)1 },
+                    { 2, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "İşlemde", true, (short)1 },
+                    { 3, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "Tamamlandı", true, (short)1 },
+                    { 4, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "Red Edildi", true, (short)1 }
+                });
 
             migrationBuilder.InsertData(
                 table: "Labels",

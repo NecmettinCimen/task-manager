@@ -41,8 +41,8 @@ namespace TaskManager
             });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            services.AddFactory<IBaseService, BaseService>();
-            services.AddDbContext<MainContext>();
+            services.AddScoped<IBaseService, BaseService>();
+            services.AddDbContext<MainContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllersWithViews();
 
             var builder = services.AddRazorPages();
@@ -96,22 +96,8 @@ namespace TaskManager
                     "default",
                     "{controller=Home}/{action=Index}/{id?}");
             });
-            using (var context = new MainContext())
-            {
-                context.Database.Migrate();
-            }
+
         }
     }
 
-    public static class ServiceCollectionExtensions
-    {
-        public static void AddFactory<TService, TImplementation>(this IServiceCollection services)
-            where TService : class
-            where TImplementation : class, TService
-        {
-            services.AddTransient<TService, TImplementation>();
-            services.AddSingleton<Func<TService>>(x => () => x.GetService<TService>());
-            services.AddScoped<TService, TImplementation>();
-        }
-    }
 }
