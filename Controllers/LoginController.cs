@@ -16,7 +16,7 @@ namespace TaskManager.Controllers
             _baseService = baseService;
         }
 
-        [HttpPost]
+        [HttpPost("Login")]
         public async Task<IActionResult> IndexAsync(User model)
         {
             var item = await _baseService.GetList<User>()
@@ -32,7 +32,7 @@ namespace TaskManager.Controllers
             return Redirect("/");
         }
 
-        [HttpPost]
+        [HttpPost("Logout")]
         public IActionResult Logout()
         {
             Response.Cookies.Delete("userid");

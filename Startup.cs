@@ -42,7 +42,7 @@ namespace TaskManager
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddScoped<IBaseService, BaseService>();
-            services.AddDbContext<MainContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<MainContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllersWithViews();
 
             var builder = services.AddRazorPages();

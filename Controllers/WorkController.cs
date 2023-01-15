@@ -33,7 +33,7 @@ namespace TaskManager.Controllers
             return Json(result);
         }
 
-
+        [HttpPost("work/save")]
         public async Task<IActionResult> Save(Work model)
         {
             model.Url = FriendlyURL.GetURLFromTitle(model.Title);
@@ -110,6 +110,7 @@ namespace TaskManager.Controllers
             return Redirect("/");
         }
 
+        [HttpPost("work/update")]
         public async Task<IActionResult> Update(Work model)
         {
             var item = await _baseService.Get<Work>(model.Id);
@@ -123,6 +124,7 @@ namespace TaskManager.Controllers
         }
 
 
+        [HttpPost("work/updatestatus")]
         public async Task<IActionResult> UpdateStatus(Work model)
         {
             var item = await _baseService.Get<Work>(model.Id);
@@ -161,6 +163,7 @@ namespace TaskManager.Controllers
             return Redirect($"/{project.Url}");
         }
 
+        [HttpPost("work/updatelabels")]
         public async Task<IActionResult> UpdateLabels(UpdateLabelsDto model)
         {
             var project = await _baseService.Get<Project>(model.ProjectId);

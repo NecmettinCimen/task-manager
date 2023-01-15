@@ -34,7 +34,7 @@ namespace TaskManager.Controllers
 
             return Json(result);
         }
-
+        [HttpPost("project/save")]
         public async Task<IActionResult> Save(Project model)
         {
             var user = HttpContext.Session.GetInt32("userid");
@@ -46,7 +46,7 @@ namespace TaskManager.Controllers
 
         public async Task<IActionResult> UpdateDisplayOrder(string id)
         {
-            int[] ids = id.Split(",").Select(s=>int.Parse(s)).ToArray();
+            int[] ids = id.Split(",").Select(s => int.Parse(s)).ToArray();
             var projects = await _baseService.GetList<Project>().ToListAsync();
             for (int i = 0; i < ids.Length; i++)
             {
@@ -65,9 +65,9 @@ namespace TaskManager.Controllers
         {
             throw new NotImplementedException();
         }
-
+        [HttpGet("Project")]
         public async Task<ActionResult> Index(string project,
-            string key)
+                    string key)
         {
             var model = _baseService.GetList<Project>()
                 .FirstOrDefault(f => f.Url == project);
@@ -77,41 +77,41 @@ namespace TaskManager.Controllers
                 {
                     Project = model,
                     WorkList = await (from w in _baseService.GetList<Work>()
-                        where w.ProjectId == model.Id && !w.ParentWorkId.HasValue
-                        join e in _baseService.GetList<Event>() on w.EventId equals e.Id
-                        orderby w.EventId
-                        select new WorkDto
-                        {
-                            Id = w.Id,
-                            Title = w.Title,
-                            Url = w.Url,
-                            CreateDate = w.CreateDate,
-                            EventName = e.Name,
-                            ManagerId = w.ManagerId,
-                            ProjectId = w.ProjectId,
-                            Labels =
-                                _baseService.GetList<WorkLabels>()
-                                    .Where(wl => wl.WorkId == w.Id)
-                                    .Select(s => s.LabelId)
-                                    .ToList(),
-                            FirstLabelName =
-                                (from wl in _baseService.GetList<WorkLabels>()
-                                        .Where(f => f.WorkId == w.Id)
-                                    join l in _baseService.GetList<Label>() on wl.LabelId equals l.Id
-                                    select l.Name).First(),
-                            WorkProgres = _baseService.GetList<Work>()
-                                              .Count(w => w.ParentWorkId == w.Id) >
-                                          0
-                                ? Convert.ToInt32(
-                                    Convert.ToDouble(_baseService.GetList<Work>()
-                                        .Count(w => w.ParentWorkId == w.Id && w.EventId != 1)) /
-                                    Convert.ToDouble(_baseService.GetList<Work>()
-                                        .Count(w => w.ParentWorkId == w.Id)) *
-                                    100)
-                                : w.EventId == 1
-                                    ? 0
-                                    : 100
-                        }).ToListAsync(),
+                                      where w.ProjectId == model.Id && !w.ParentWorkId.HasValue
+                                      join e in _baseService.GetList<Event>() on w.EventId equals e.Id
+                                      orderby w.EventId
+                                      select new WorkDto
+                                      {
+                                          Id = w.Id,
+                                          Title = w.Title,
+                                          Url = w.Url,
+                                          CreateDate = w.CreateDate,
+                                          EventName = e.Name,
+                                          ManagerId = w.ManagerId,
+                                          ProjectId = w.ProjectId,
+                                          Labels =
+                                              _baseService.GetList<WorkLabels>()
+                                                  .Where(wl => wl.WorkId == w.Id)
+                                                  .Select(s => s.LabelId)
+                                                  .ToList(),
+                                          FirstLabelName =
+                                              (from wl in _baseService.GetList<WorkLabels>()
+                                                      .Where(f => f.WorkId == w.Id)
+                                               join l in _baseService.GetList<Label>() on wl.LabelId equals l.Id
+                                               select l.Name).First(),
+                                          WorkProgres = _baseService.GetList<Work>()
+                                                            .Count(w => w.ParentWorkId == w.Id) >
+                                                        0
+                                              ? Convert.ToInt32(
+                                                  Convert.ToDouble(_baseService.GetList<Work>()
+                                                      .Count(w => w.ParentWorkId == w.Id && w.EventId != 1)) /
+                                                  Convert.ToDouble(_baseService.GetList<Work>()
+                                                      .Count(w => w.ParentWorkId == w.Id)) *
+                                                  100)
+                                              : w.EventId == 1
+                                                  ? 0
+                                                  : 100
+                                      }).ToListAsync(),
                     EventList = await _baseService.GetList<Event>()
                         .ToListAsync(),
                     LabelList = await _baseService.GetList<Label>()
@@ -123,6 +123,7 @@ namespace TaskManager.Controllers
             return Redirect("/");
         }
 
+        [HttpPost("project/update")]
         public async Task<IActionResult> Update(Project model)
         {
             var item = await _baseService.Get<Project>(model.Id);
