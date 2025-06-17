@@ -1,0 +1,15 @@
+version: '1.0'
+
+services:
+  taskmanagerapi:
+    container_name: task-manager-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      - ASPNETCORE_URLS=http://+:5000
+
+networks:
+  default:
+      name: srvnecmettin
