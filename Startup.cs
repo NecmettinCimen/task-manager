@@ -42,7 +42,18 @@ namespace TaskManager
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddScoped<IBaseService, BaseService>();
-            services.AddDbContext<MainContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            // Use SQLite if defined, otherwise fallback to SQL Server
+            var useSqlite = Configuration.GetConnectionString("SqliteConnection") != null;
+            if (useSqlite)
+            {
+                services.AddDbContext<MainContext>(options =>
+                    options.UseSqlite(Configuration.GetConnectionString("SqliteConnection")));
+            }
+            else
+            {
+                services.AddDbContext<MainContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            }
             services.AddControllersWithViews();
 
             var builder = services.AddRazorPages();

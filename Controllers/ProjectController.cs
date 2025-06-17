@@ -34,7 +34,7 @@ namespace TaskManager.Controllers
 
             return Json(result);
         }
-        [HttpPost("project/save")]
+        [HttpGet("project/save")]
         public async Task<IActionResult> Save(Project model)
         {
             var user = HttpContext.Session.GetInt32("userid");

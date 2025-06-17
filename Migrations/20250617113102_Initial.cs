@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TaskManager.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,15 +17,15 @@ namespace TaskManager.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NameSurname = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    Status = table.Column<short>(type: "smallint", nullable: false),
-                    Public = table.Column<bool>(type: "bit", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    NameSurname = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "TEXT", maxLength: 150, nullable: false),
+                    Password = table.Column<string>(type: "TEXT", maxLength: 150, nullable: false),
+                    Status = table.Column<short>(type: "INTEGER", nullable: false),
+                    Public = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,13 +42,13 @@ namespace TaskManager.Migrations
                 name: "Events",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
-                    Status = table.Column<short>(type: "smallint", nullable: false),
-                    Public = table.Column<bool>(type: "bit", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
+                    Status = table.Column<short>(type: "INTEGER", nullable: false),
+                    Public = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -65,13 +65,13 @@ namespace TaskManager.Migrations
                 name: "Labels",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
-                    Status = table.Column<short>(type: "smallint", nullable: false),
-                    Public = table.Column<bool>(type: "bit", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
+                    Status = table.Column<short>(type: "INTEGER", nullable: false),
+                    Public = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -88,19 +88,19 @@ namespace TaskManager.Migrations
                 name: "Projects",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
-                    Url = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    Explanation = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ShareKey = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    ManagerId = table.Column<int>(type: "int", nullable: false),
-                    EventId = table.Column<int>(type: "int", nullable: false),
-                    DisplayOrder = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<short>(type: "smallint", nullable: false),
-                    Public = table.Column<bool>(type: "bit", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
+                    Url = table.Column<string>(type: "TEXT", maxLength: 250, nullable: true),
+                    Explanation = table.Column<string>(type: "TEXT", nullable: true),
+                    ShareKey = table.Column<string>(type: "TEXT", maxLength: 10, nullable: true),
+                    ManagerId = table.Column<int>(type: "INTEGER", nullable: false),
+                    EventId = table.Column<int>(type: "INTEGER", nullable: false),
+                    DisplayOrder = table.Column<int>(type: "INTEGER", nullable: false),
+                    Status = table.Column<short>(type: "INTEGER", nullable: false),
+                    Public = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -129,19 +129,19 @@ namespace TaskManager.Migrations
                 name: "Works",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
-                    Url = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    Explanation = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProjectId = table.Column<int>(type: "int", nullable: false),
-                    ManagerId = table.Column<int>(type: "int", nullable: false),
-                    EventId = table.Column<int>(type: "int", nullable: false),
-                    ParentWorkId = table.Column<int>(type: "int", nullable: true),
-                    Status = table.Column<short>(type: "smallint", nullable: false),
-                    Public = table.Column<bool>(type: "bit", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
+                    Url = table.Column<string>(type: "TEXT", maxLength: 250, nullable: true),
+                    Explanation = table.Column<string>(type: "TEXT", nullable: true),
+                    ProjectId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ManagerId = table.Column<int>(type: "INTEGER", nullable: false),
+                    EventId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ParentWorkId = table.Column<int>(type: "INTEGER", nullable: true),
+                    Status = table.Column<short>(type: "INTEGER", nullable: false),
+                    Public = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -181,15 +181,15 @@ namespace TaskManager.Migrations
                 name: "WorkHistorys",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PrevStatus = table.Column<short>(type: "smallint", nullable: false),
-                    WorkId = table.Column<int>(type: "int", nullable: false),
-                    ManagerId = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<short>(type: "smallint", nullable: false),
-                    Public = table.Column<bool>(type: "bit", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    PrevStatus = table.Column<short>(type: "INTEGER", nullable: false),
+                    WorkId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ManagerId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Status = table.Column<short>(type: "INTEGER", nullable: false),
+                    Public = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -218,14 +218,14 @@ namespace TaskManager.Migrations
                 name: "WorkLabels",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    WorkId = table.Column<int>(type: "int", nullable: false),
-                    LabelId = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<short>(type: "smallint", nullable: false),
-                    Public = table.Column<bool>(type: "bit", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    WorkId = table.Column<int>(type: "INTEGER", nullable: false),
+                    LabelId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Status = table.Column<short>(type: "INTEGER", nullable: false),
+                    Public = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
