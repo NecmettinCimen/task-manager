@@ -1,4 +1,3 @@
-
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -13,7 +12,7 @@
   <h3 align="center">Task Manager App</h3>
 
   <p align="center">
-    Task Manager App
+    Task management system - Web-based task manager with ASP.NET Core
     <br />
     <a href="https://github.com/necmettincimen/task-manager"><strong>Explore the docs »</strong></a>
     <br />
@@ -58,7 +57,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-task-manager App
+Task management system - Web-based task manager with ASP.NET Core
 
 A list of commonly used resources that I find helpful are listed in the acknowledgements.
 
@@ -67,6 +66,8 @@ A list of commonly used resources that I find helpful are listed in the acknowle
 | [![WEB](taskmanager.png)](taskmanager.png)
 
 ### Built With
+
+**Technologies:** `csharp` `dotnet9` `entityframework` `sqlite` `razorpages` `docker`
 
 This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 * [Net Core](https://dotnet.microsoft.com/en-us/apps/aspnet)
